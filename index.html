@@ -11,17 +11,13 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* ─── HeoRlytics Brand Palette ─── */
       --navy:        #0B3C6D;
       --navy-dark:   #072d54;
       --navy-mid:    #285A84;
       --navy-light:  #d6e4f0;
       --red:         #8C2222;
-      --red-light:   #fdf0f0;
       --red-mid:     #b02a2a;
       --gray-brand:  #737373;
-
-      /* ─── UI Palette ─── */
       --bg:          #eef2f7;
       --surface:     #ffffff;
       --surface-2:   #f5f8fb;
@@ -30,7 +26,6 @@
       --text:        #0e1f35;
       --text-2:      #4a5568;
       --text-3:      #8fa3b8;
-
       --radius-sm:   5px;
       --radius:      9px;
       --radius-lg:   13px;
@@ -46,9 +41,7 @@
       min-height: 100vh;
     }
 
-    /* ====================================================
-       HEADER
-    ==================================================== */
+    /* ── HEADER ── */
     header {
       background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-mid) 100%);
       padding: 2.5rem 2rem 2rem;
@@ -56,587 +49,360 @@
       overflow: hidden;
     }
     header::before {
-      content: "";
-      position: absolute;
-      top: -60px; right: -60px;
-      width: 340px; height: 340px;
-      border-radius: 50%;
-      background: rgba(140,34,34,.12);
-      pointer-events: none;
+      content: ""; position: absolute; top: -60px; right: -60px;
+      width: 340px; height: 340px; border-radius: 50%;
+      background: rgba(140,34,34,.12); pointer-events: none;
     }
     header::after {
-      content: "";
-      position: absolute;
-      bottom: -80px; left: 30%;
-      width: 260px; height: 260px;
-      border-radius: 50%;
-      background: rgba(40,90,132,.18);
-      pointer-events: none;
+      content: ""; position: absolute; bottom: -80px; left: 30%;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: rgba(40,90,132,.18); pointer-events: none;
     }
-    .header-inner {
-      max-width: 1240px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ─── Inline SVG Logo ─── */
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.75rem;
-    }
-    .logo-svg { height: 38px; width: auto; }
-    .logo-divider {
-      width: 1px; height: 30px;
-      background: rgba(255,255,255,.25);
-    }
-    .logo-tagline {
-      font-size: 11.5px;
-      color: rgba(255,255,255,.55);
-      letter-spacing: .04em;
-    }
-
+    .header-inner { max-width: 1240px; margin: 0 auto; position: relative; z-index: 1; }
+    .logo-wrap { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem; }
+    .logo-svg  { height: 38px; width: auto; }
+    .logo-divider { width: 1px; height: 30px; background: rgba(255,255,255,.25); }
+    .logo-tagline { font-size: 11.5px; color: rgba(255,255,255,.55); letter-spacing: .04em; }
     header h1 {
       font-family: "Tenor Sans", serif;
       font-size: clamp(1.7rem, 4vw, 2.5rem);
-      font-weight: 400;
-      color: #fff;
-      letter-spacing: -.01em;
-      margin-bottom: .5rem;
+      font-weight: 400; color: #fff; letter-spacing: -.01em; margin-bottom: .5rem;
     }
     header h1 span { color: #f8c8c8; }
-    header p {
-      font-size: 14px;
-      color: rgba(255,255,255,.65);
-      max-width: 640px;
-      line-height: 1.7;
-      margin-bottom: 2rem;
-    }
-
-    .header-stats {
-      display: flex;
-      gap: .85rem;
-      flex-wrap: wrap;
-    }
+    header p { font-size: 14px; color: rgba(255,255,255,.65); max-width: 640px; line-height: 1.7; margin-bottom: 2rem; }
+    .header-stats { display: flex; gap: .85rem; flex-wrap: wrap; }
     .h-stat {
-      background: rgba(255,255,255,.09);
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: var(--radius);
-      padding: .55rem 1.1rem;
+      background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--radius); padding: .55rem 1.1rem;
     }
-    .h-stat-num {
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: #f8c8c8;
-      line-height: 1.1;
-    }
+    .h-stat-num { font-size: 1.35rem; font-weight: 700; color: #f8c8c8; line-height: 1.1; }
     .h-stat-label { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 1px; }
 
-    /* ====================================================
-       FILTER BAR
-    ==================================================== */
+    /* ── REFRESH PROGRESS BAR ── */
+    #refresh-progress-bar {
+      height: 3px;
+      background: var(--navy-light);
+      position: relative;
+      overflow: hidden;
+      display: none;
+    }
+    #refresh-progress-bar.active { display: block; }
+    #refresh-progress-fill {
+      position: absolute; left: 0; top: 0; height: 100%;
+      background: linear-gradient(90deg, var(--red), var(--navy-mid));
+      transition: width .3s ease;
+    }
+    #refresh-progress-fill.indeterminate {
+      width: 40% !important;
+      animation: indeterminate 1.4s ease-in-out infinite;
+    }
+    @keyframes indeterminate {
+      0%   { left: -40%; }
+      100% { left: 110%; }
+    }
+
+    /* ── FILTER BAR ── */
     .filter-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(238,242,247,.96);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(238,242,247,.97);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
       padding: .7rem 2rem;
     }
     .filter-inner {
-      max-width: 1240px;
-      margin: 0 auto;
-      display: flex;
-      gap: .55rem;
-      flex-wrap: wrap;
-      align-items: center;
+      max-width: 1240px; margin: 0 auto;
+      display: flex; gap: .55rem; flex-wrap: wrap; align-items: center;
     }
     .search-wrap {
-      position: relative;
-      flex: 1;
-      min-width: 200px;
-      max-width: 340px;
+      position: relative; flex: 1; min-width: 200px; max-width: 340px;
     }
     .search-icon {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-3);
-      pointer-events: none;
+      position: absolute; left: 10px; top: 50%;
+      transform: translateY(-50%); color: var(--text-3); pointer-events: none;
     }
     #search {
-      width: 100%;
-      padding: .5rem .75rem .5rem 2.1rem;
-      border: 1.5px solid var(--border-2);
-      border-radius: var(--radius);
-      font-size: 13.5px;
-      font-family: inherit;
-      background: var(--surface);
-      color: var(--text);
-      outline: none;
-      transition: border-color .15s, box-shadow .15s;
+      width: 100%; padding: .5rem .75rem .5rem 2.1rem;
+      border: 1.5px solid var(--border-2); border-radius: var(--radius);
+      font-size: 13.5px; font-family: inherit; background: var(--surface);
+      color: var(--text); outline: none; transition: border-color .15s, box-shadow .15s;
     }
-    #search:focus {
-      border-color: var(--navy-mid);
-      box-shadow: 0 0 0 3px rgba(40,90,132,.14);
-    }
+    #search:focus { border-color: var(--navy-mid); box-shadow: 0 0 0 3px rgba(40,90,132,.14); }
     #search::placeholder { color: var(--text-3); }
     .kbd-hint {
-      position: absolute;
-      right: 9px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 10px;
-      color: var(--text-3);
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1px 5px;
-      pointer-events: none;
+      position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+      font-size: 10px; color: var(--text-3); background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; pointer-events: none;
     }
 
     .pill-group { display: flex; gap: .3rem; flex-wrap: wrap; }
     .pill {
-      padding: .35rem .8rem;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1.5px solid var(--border-2);
-      background: var(--surface);
-      color: var(--text-2);
-      transition: all .15s;
-      white-space: nowrap;
-      user-select: none;
-      font-family: inherit;
+      padding: .35rem .8rem; border-radius: 20px; font-size: 12px; font-weight: 500;
+      cursor: pointer; border: 1.5px solid var(--border-2); background: var(--surface);
+      color: var(--text-2); transition: all .15s; white-space: nowrap;
+      user-select: none; font-family: inherit;
     }
     .pill:hover { border-color: var(--navy-mid); color: var(--navy-mid); }
     .pill.active { background: var(--navy); color: #fff; border-color: var(--navy); }
-    .pill .count {
-      display: inline-block;
-      background: rgba(255,255,255,.25);
-      border-radius: 10px;
-      padding: 0 5px;
-      font-size: 10px;
-      margin-left: 3px;
-    }
-    .pill:not(.active) .count {
-      background: var(--border);
-      color: var(--text-3);
-    }
-
     .filter-sep { width: 1px; height: 26px; background: var(--border-2); align-self: center; flex-shrink: 0; }
-
     select.f-select {
-      padding: .44rem .8rem;
-      border: 1.5px solid var(--border-2);
-      border-radius: var(--radius);
-      font-size: 13px;
-      font-family: inherit;
-      background: var(--surface);
-      color: var(--text);
-      cursor: pointer;
-      outline: none;
-      transition: border-color .15s;
+      padding: .44rem .8rem; border: 1.5px solid var(--border-2); border-radius: var(--radius);
+      font-size: 13px; font-family: inherit; background: var(--surface);
+      color: var(--text); cursor: pointer; outline: none; transition: border-color .15s;
     }
     select.f-select:focus { border-color: var(--navy-mid); }
-
-    /* submit CTA in filter bar */
     .submit-btn {
-      margin-left: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: .44rem 1rem;
-      border-radius: var(--radius);
-      background: var(--red);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      border: none;
-      cursor: pointer;
-      transition: background .15s;
-      white-space: nowrap;
+      margin-left: auto; display: inline-flex; align-items: center; gap: 5px;
+      padding: .44rem 1rem; border-radius: var(--radius); background: var(--red);
+      color: #fff; font-size: 13px; font-weight: 600; font-family: inherit;
+      border: none; cursor: pointer; transition: background .15s; white-space: nowrap;
     }
     .submit-btn:hover { background: var(--red-mid); }
 
-    /* ====================================================
-       LEGEND
-    ==================================================== */
+    /* ── LEGEND ── */
     .legend-bar {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: .5rem 2rem;
+      background: var(--surface); border-bottom: 1px solid var(--border); padding: .5rem 2rem;
     }
     .legend-inner {
-      max-width: 1240px;
-      margin: 0 auto;
-      display: flex;
-      gap: .75rem 1.25rem;
-      flex-wrap: wrap;
-      align-items: center;
+      max-width: 1240px; margin: 0 auto;
+      display: flex; gap: .75rem 1.25rem; flex-wrap: wrap; align-items: center;
     }
     .legend-title { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; }
     .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11.5px;
-      color: var(--text-2);
-      cursor: pointer;
-      padding: 2px 4px;
-      border-radius: 4px;
-      transition: background .1s;
+      display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--text-2);
+      cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: background .1s;
     }
     .legend-item:hover { background: var(--border); }
     .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
-    /* ====================================================
-       MAIN
-    ==================================================== */
+    /* ── MAIN ── */
     main { max-width: 1240px; margin: 0 auto; padding: 1.4rem 2rem 3rem; }
-
     .results-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-      gap: .5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem; flex-wrap: wrap; gap: .5rem;
     }
     #results-count { font-size: 13px; color: var(--text-2); }
+    .toolbar-right { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
 
-    .toolbar-right {
-      display: flex;
-      gap: .5rem;
-      align-items: center;
-    }
     .toolbar-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: .36rem .75rem;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      font-weight: 500;
-      font-family: inherit;
-      cursor: pointer;
-      border: 1.5px solid var(--border-2);
-      background: var(--surface);
-      color: var(--text-2);
-      transition: all .15s;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: .38rem .8rem; border-radius: var(--radius-sm);
+      font-size: 12px; font-weight: 500; font-family: inherit;
+      cursor: pointer; border: 1.5px solid var(--border-2); background: var(--surface);
+      color: var(--text-2); transition: all .15s; white-space: nowrap;
     }
-    .toolbar-btn:hover { border-color: var(--navy-mid); color: var(--navy); }
+    .toolbar-btn:hover:not(:disabled) { border-color: var(--navy-mid); color: var(--navy); }
+    .toolbar-btn:disabled { opacity: .55; cursor: not-allowed; }
 
-    /* ====================================================
-       GRID
-    ==================================================== */
+    /* Refresh button — special styling */
+    .btn-refresh-all {
+      border-color: var(--navy-mid); color: var(--navy);
+      background: var(--navy-light);
+    }
+    .btn-refresh-all:hover:not(:disabled) {
+      background: #c5d8ec; border-color: var(--navy);
+    }
+    .btn-refresh-all.loading {
+      background: var(--navy-light); color: var(--navy-mid);
+    }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin .8s linear infinite; display: inline-block; }
+
+    /* Last refreshed chip */
+    #last-refreshed {
+      font-size: 11px; color: var(--text-3);
+      display: none; align-items: center; gap: 4px;
+    }
+    #last-refreshed.visible { display: flex; }
+    #last-refreshed svg { color: #2e8b57; }
+
+    /* ── GRID ── */
     #package-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(355px, 1fr));
       gap: 14px;
     }
 
-    /* ====================================================
-       CARD
-    ==================================================== */
+    /* ── CARD ── */
     .pkg-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.1rem 1.2rem .95rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      box-shadow: var(--shadow);
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.1rem 1.2rem .95rem;
+      display: flex; flex-direction: column; box-shadow: var(--shadow);
       transition: box-shadow .18s, border-color .18s, transform .18s;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
     .pkg-card::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--card-accent, var(--border));
+      content: ""; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; background: var(--card-accent, var(--border));
       border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     }
-    .pkg-card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: var(--card-accent, var(--border-2));
-      transform: translateY(-2px);
+    .pkg-card:hover { box-shadow: var(--shadow-md); border-color: var(--card-accent, var(--border-2)); transform: translateY(-2px); }
+
+    /* Card loading overlay */
+    .pkg-card.card-loading { opacity: .55; pointer-events: none; }
+    .pkg-card.card-loading::after {
+      content: ""; position: absolute; inset: 0;
+      background: rgba(255,255,255,.6);
+      display: flex; align-items: center; justify-content: center;
     }
+    /* Card refreshed flash */
+    @keyframes card-flash { 0%,100% { background: var(--surface); } 50% { background: #e8f5e9; } }
+    .pkg-card.card-refreshed { animation: card-flash .6s ease; }
 
     .card-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: .5rem;
-      margin-bottom: .5rem;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: .5rem; margin-bottom: .5rem;
     }
     .pkg-name {
       font-family: ui-monospace, "Cascadia Code", "SF Mono", "Fira Code", monospace;
-      font-size: 15.5px;
-      font-weight: 700;
-      color: var(--navy);
-      letter-spacing: -.01em;
+      font-size: 15.5px; font-weight: 700; color: var(--navy); letter-spacing: -.01em;
     }
     .pkg-name a { color: inherit; text-decoration: none; }
     .pkg-name a:hover { text-decoration: underline; }
 
-    .badge-row { display: flex; gap: .3rem; flex-shrink: 0; flex-wrap: wrap; }
+    .badge-row { display: flex; gap: .3rem; flex-shrink: 0; flex-wrap: wrap; align-items: center; }
     .badge {
-      font-size: 10.5px;
-      font-weight: 600;
-      padding: 2.5px 7px;
-      border-radius: 10px;
-      white-space: nowrap;
-      letter-spacing: .02em;
+      font-size: 10.5px; font-weight: 600; padding: 2.5px 7px;
+      border-radius: 10px; white-space: nowrap; letter-spacing: .02em;
     }
     .b-cran    { background: #e6f4ea; color: #1a6b2e; }
     .b-github  { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
     .b-version { background: var(--navy-light); color: var(--navy); }
+    .b-stars {
+      background: #fffbeb; color: #92400e; border: 1px solid #fde68a;
+      display: inline-flex; align-items: center; gap: 3px;
+    }
+
+    /* Per-card refresh button */
+    .btn-card-refresh {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1px solid var(--border-2); background: var(--surface-2);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--text-3); transition: all .15s; flex-shrink: 0; padding: 0;
+    }
+    .btn-card-refresh:hover { border-color: var(--navy-mid); color: var(--navy); background: var(--navy-light); }
+    .btn-card-refresh:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-card-refresh .spin { font-size: 12px; line-height: 1; }
 
     .pkg-category {
-      font-size: 10.5px;
-      font-weight: 600;
-      color: var(--text-3);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      margin-bottom: .5rem;
+      font-size: 10.5px; font-weight: 600; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: .5rem;
     }
-
-    .pkg-desc {
-      font-size: 13px;
-      color: var(--text-2);
-      line-height: 1.65;
-      margin-bottom: .8rem;
-      flex: 1;
-    }
+    .pkg-desc { font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: .8rem; flex: 1; }
 
     .pkg-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: .5rem;
-      flex-wrap: wrap;
-      margin-bottom: .8rem;
-      padding: .6rem .75rem;
-      background: var(--surface-2);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
+      display: flex; justify-content: space-between; gap: .5rem; flex-wrap: wrap;
+      margin-bottom: .8rem; padding: .6rem .75rem;
+      background: var(--surface-2); border-radius: var(--radius-sm); border: 1px solid var(--border);
     }
     .meta-item { display: flex; flex-direction: column; gap: 1px; }
     .meta-label { font-size: 10px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .07em; }
     .meta-value { font-size: 12.5px; color: var(--text); font-weight: 500; }
 
-    /* download bar */
+    /* Download bar */
     .dl-section { margin-bottom: .85rem; }
     .dl-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
     .dl-label { font-size: 10.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: .07em; font-weight: 600; }
     .dl-num { font-size: 12px; font-weight: 700; color: var(--text); }
     .dl-bar-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
-    .dl-bar-fill { height: 100%; border-radius: 3px; background: var(--card-accent, var(--navy-mid)); }
+    .dl-bar-fill { height: 100%; border-radius: 3px; }
     .dl-monthly-row { display: flex; align-items: baseline; gap: 4px; }
-    .dl-monthly-num { font-size: 1.2rem; font-weight: 700; color: var(--navy); line-height: 1; }
+    .dl-monthly-num { font-size: 1.2rem; font-weight: 700; line-height: 1; }
     .dl-monthly-label { font-size: 11px; color: var(--text-3); }
 
-    /* card footer */
+    /* Card footer */
     .card-footer {
-      display: flex;
-      gap: .45rem;
-      padding-top: .75rem;
-      border-top: 1px solid var(--border);
-      flex-wrap: wrap;
+      display: flex; gap: .45rem; padding-top: .75rem;
+      border-top: 1px solid var(--border); flex-wrap: wrap; align-items: center;
     }
     .link-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      font-weight: 500;
-      padding: .33rem .7rem;
-      border-radius: var(--radius-sm);
-      text-decoration: none;
-      transition: all .15s;
-      border: 1px solid transparent;
-      font-family: inherit;
-      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 500; padding: .33rem .7rem;
+      border-radius: var(--radius-sm); text-decoration: none;
+      transition: all .15s; border: 1px solid transparent; font-family: inherit; cursor: pointer;
     }
-    .btn-cran    { background: #e6f4ea; color: #1a6b2e; border-color: #b7dfc2; }
-    .btn-cran:hover    { background: #d0eeda; }
-    .btn-github  { background: var(--surface-2); color: #374151; border-color: var(--border-2); }
-    .btn-github:hover  { background: var(--border); }
+    .btn-cran   { background: #e6f4ea; color: #1a6b2e; border-color: #b7dfc2; }
+    .btn-cran:hover   { background: #d0eeda; }
+    .btn-github { background: var(--surface-2); color: #374151; border-color: var(--border-2); }
+    .btn-github:hover { background: var(--border); }
     .btn-copy {
-      margin-left: auto;
-      background: transparent;
-      color: var(--text-3);
-      border-color: var(--border);
-      font-family: ui-monospace, monospace;
-      font-size: 11px;
+      margin-left: auto; background: transparent; color: var(--text-3);
+      border-color: var(--border); font-family: ui-monospace, monospace; font-size: 11px;
     }
     .btn-copy:hover { color: var(--navy); border-color: var(--navy-mid); }
 
-    /* ====================================================
-       EMPTY STATE
-    ==================================================== */
-    .empty-state {
-      grid-column: 1/-1;
-      text-align: center;
-      padding: 4rem 1rem;
-      color: var(--text-3);
+    /* Refresh status toast */
+    #toast {
+      position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--navy); color: #fff; font-size: 13px; font-weight: 500;
+      padding: .6rem 1.2rem; border-radius: 20px; box-shadow: 0 4px 16px rgba(7,45,84,.3);
+      opacity: 0; transition: opacity .25s, transform .25s; z-index: 999; white-space: nowrap;
     }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #toast.error { background: var(--red); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state { grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--text-3); }
     .empty-state h3 { font-size: 16px; color: var(--text-2); margin-bottom: .4rem; }
 
-    /* ====================================================
-       MODAL — Submit a Package
-    ==================================================== */
+    /* ── MODAL ── */
     .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(7,45,84,.55);
-      backdrop-filter: blur(4px);
-      z-index: 500;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
+      display: none; position: fixed; inset: 0;
+      background: rgba(7,45,84,.55); backdrop-filter: blur(4px);
+      z-index: 500; align-items: center; justify-content: center; padding: 1rem;
     }
     .modal-backdrop.open { display: flex; }
     .modal {
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 20px 60px rgba(7,45,84,.3);
-      position: relative;
-      border-top: 4px solid var(--red);
+      background: var(--surface); border-radius: var(--radius-lg); padding: 2rem;
+      width: 100%; max-width: 500px; box-shadow: 0 20px 60px rgba(7,45,84,.3);
+      position: relative; border-top: 4px solid var(--red);
     }
     .modal-close {
-      position: absolute;
-      top: 1rem; right: 1rem;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      width: 30px; height: 30px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-3);
-      font-size: 16px;
-      transition: all .15s;
+      position: absolute; top: 1rem; right: 1rem; background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: 50%; width: 30px; height: 30px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--text-3); font-size: 16px; transition: all .15s;
     }
     .modal-close:hover { background: var(--border); color: var(--text); }
-    .modal h2 {
-      font-family: "Tenor Sans", serif;
-      font-size: 1.3rem;
-      color: var(--navy);
-      margin-bottom: .4rem;
-      font-weight: 400;
-    }
+    .modal h2 { font-family: "Tenor Sans", serif; font-size: 1.3rem; color: var(--navy); margin-bottom: .4rem; font-weight: 400; }
     .modal p { font-size: 13px; color: var(--text-2); margin-bottom: 1.25rem; line-height: 1.6; }
     .form-row { margin-bottom: 1rem; }
     .form-row label { display: block; font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: .35rem; text-transform: uppercase; letter-spacing: .06em; }
-    .form-row input,
-    .form-row select,
-    .form-row textarea {
-      width: 100%;
-      padding: .6rem .8rem;
-      border: 1.5px solid var(--border-2);
-      border-radius: var(--radius);
-      font-size: 13.5px;
-      font-family: inherit;
-      color: var(--text);
-      background: var(--surface);
-      outline: none;
-      transition: border-color .15s, box-shadow .15s;
-      resize: vertical;
+    .form-row input, .form-row select, .form-row textarea {
+      width: 100%; padding: .6rem .8rem; border: 1.5px solid var(--border-2);
+      border-radius: var(--radius); font-size: 13.5px; font-family: inherit;
+      color: var(--text); background: var(--surface); outline: none;
+      transition: border-color .15s, box-shadow .15s; resize: vertical;
     }
-    .form-row input:focus,
-    .form-row select:focus,
-    .form-row textarea:focus {
-      border-color: var(--navy-mid);
-      box-shadow: 0 0 0 3px rgba(40,90,132,.12);
+    .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+      border-color: var(--navy-mid); box-shadow: 0 0 0 3px rgba(40,90,132,.12);
     }
     .modal-footer { display: flex; gap: .5rem; justify-content: flex-end; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-    .btn-cancel {
-      padding: .5rem 1rem;
-      border-radius: var(--radius);
-      border: 1.5px solid var(--border-2);
-      background: var(--surface);
-      color: var(--text-2);
-      font-size: 13px;
-      font-family: inherit;
-      cursor: pointer;
-      transition: all .15s;
-    }
+    .btn-cancel { padding: .5rem 1rem; border-radius: var(--radius); border: 1.5px solid var(--border-2); background: var(--surface); color: var(--text-2); font-size: 13px; font-family: inherit; cursor: pointer; transition: all .15s; }
     .btn-cancel:hover { background: var(--border); }
-    .btn-submit {
-      padding: .5rem 1.2rem;
-      border-radius: var(--radius);
-      border: none;
-      background: var(--red);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: background .15s;
-    }
+    .btn-submit { padding: .5rem 1.2rem; border-radius: var(--radius); border: none; background: var(--red); color: #fff; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s; }
     .btn-submit:hover { background: var(--red-mid); }
 
-    /* ====================================================
-       BACK TO TOP
-    ==================================================== */
+    /* ── BACK TO TOP ── */
     #back-to-top {
-      position: fixed;
-      bottom: 1.75rem;
-      right: 1.75rem;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: var(--navy);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: fixed; bottom: 1.75rem; right: 1.75rem;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--navy); color: #fff; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: 0 4px 12px rgba(7,45,84,.3);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity .2s, transform .2s;
-      z-index: 200;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity .2s, transform .2s; z-index: 200;
     }
     #back-to-top.visible { opacity: 1; transform: translateY(0); }
     #back-to-top:hover { background: var(--navy-mid); }
 
-    /* ====================================================
-       FOOTER
-    ==================================================== */
-    footer {
-      background: var(--navy-dark);
-      color: rgba(255,255,255,.5);
-      text-align: center;
-      padding: 1.75rem 2rem;
-      font-size: 12px;
-    }
+    /* ── FOOTER ── */
+    footer { background: var(--navy-dark); color: rgba(255,255,255,.5); text-align: center; padding: 1.75rem 2rem; font-size: 12px; }
     footer a { color: #f8c8c8; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
     .footer-logo { margin-bottom: .6rem; }
 
-    /* ====================================================
-       RESPONSIVE
-    ==================================================== */
     @media (max-width: 640px) {
       header, .filter-bar, .legend-bar, main, footer { padding-left: 1rem; padding-right: 1rem; }
       #package-grid { grid-template-columns: 1fr; }
@@ -649,58 +415,39 @@
 </head>
 <body>
 
-<!-- ====================================================
-     HEADER
-==================================================== -->
+<!-- ── HEADER ── -->
 <header>
   <div class="header-inner">
-
-    <!-- Logo -->
     <div class="logo-wrap">
       <svg class="logo-svg" viewBox="0 0 260 46" xmlns="http://www.w3.org/2000/svg">
-        <!-- Red horizontal lines (descending, tapered) -->
         <rect x="0"  y="2"  width="30" height="5.5" rx="2.75" fill="#8C2222"/>
         <rect x="0"  y="11" width="24" height="5.5" rx="2.75" fill="#8C2222"/>
         <rect x="0"  y="20" width="18" height="5.5" rx="2.75" fill="#8C2222"/>
         <rect x="0"  y="29" width="12" height="5.5" rx="2.75" fill="#8C2222"/>
         <rect x="0"  y="38" width="7"  height="5.5" rx="2.75" fill="#8C2222"/>
-        <!-- Gray vertical separator -->
         <rect x="37" y="0" width="1.5" height="46" rx=".75" fill="#737373"/>
-        <!-- "heoRlytics" text rendered as SVG text -->
-        <text x="46" y="37" font-family="'Tenor Sans', Garamond, serif" font-size="34" fill="#0B3C6D" letter-spacing="-.5">heo<tspan fill="#0B3C6D" dx="-1">R</tspan><tspan fill="#0B3C6D">lytics</tspan></text>
+        <text x="46" y="37" font-family="'Tenor Sans',Garamond,serif" font-size="34" fill="#0B3C6D">heoRlytics</text>
       </svg>
       <div class="logo-divider"></div>
       <div class="logo-tagline">HEOR R Package Directory</div>
     </div>
-
     <h1>Find the right <span>R package</span> for your HEOR work</h1>
-    <p>A curated, searchable directory of publicly available R packages covering health economic modelling, survival analysis, network meta-analysis, quality of life, and more — with real CRAN download statistics.</p>
-
+    <p>A curated, searchable directory of publicly available R packages covering health economic modelling, survival analysis, network meta-analysis, quality of life, and more — with live CRAN &amp; GitHub statistics.</p>
     <div class="header-stats">
-      <div class="h-stat">
-        <div class="h-stat-num" id="stat-total">27</div>
-        <div class="h-stat-label">Packages</div>
-      </div>
-      <div class="h-stat">
-        <div class="h-stat-num">8</div>
-        <div class="h-stat-label">HEOR domains</div>
-      </div>
-      <div class="h-stat">
-        <div class="h-stat-num" id="stat-downloads">—</div>
-        <div class="h-stat-label">Total downloads</div>
-      </div>
-      <div class="h-stat">
-        <div class="h-stat-num">Mar 2026</div>
-        <div class="h-stat-label">Last updated</div>
-      </div>
+      <div class="h-stat"><div class="h-stat-num">27</div><div class="h-stat-label">Packages</div></div>
+      <div class="h-stat"><div class="h-stat-num">8</div><div class="h-stat-label">HEOR domains</div></div>
+      <div class="h-stat"><div class="h-stat-num" id="stat-downloads">—</div><div class="h-stat-label">Total downloads</div></div>
+      <div class="h-stat"><div class="h-stat-num" id="stat-refreshed">Mar 2026</div><div class="h-stat-label">Data as of</div></div>
     </div>
-
   </div>
 </header>
 
-<!-- ====================================================
-     FILTER BAR
-==================================================== -->
+<!-- ── PROGRESS BAR ── -->
+<div id="refresh-progress-bar">
+  <div id="refresh-progress-fill"></div>
+</div>
+
+<!-- ── FILTER BAR ── -->
 <div class="filter-bar">
   <div class="filter-inner">
     <div class="search-wrap">
@@ -710,29 +457,22 @@
       <input type="search" id="search" placeholder="Search packages, authors, keywords…" autocomplete="off" />
       <span class="kbd-hint">/</span>
     </div>
-
     <div class="filter-sep"></div>
-
     <div class="pill-group" id="avail-pills">
       <button class="pill active" data-avail="all">All</button>
       <button class="pill" data-avail="cran">CRAN only</button>
       <button class="pill" data-avail="github">Has GitHub</button>
     </div>
-
     <div class="filter-sep"></div>
-
-    <select class="f-select" id="cat-select">
-      <option value="all">All categories</option>
-    </select>
-
+    <select class="f-select" id="cat-select"><option value="all">All categories</option></select>
     <select class="f-select" id="sort-select">
       <option value="downloads_total">Most downloaded</option>
       <option value="downloads_monthly">Monthly downloads</option>
       <option value="name">Name A–Z</option>
       <option value="date">Recently updated</option>
       <option value="category">Category</option>
+      <option value="stars">GitHub stars</option>
     </select>
-
     <button class="submit-btn" id="open-modal">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
@@ -742,9 +482,7 @@
   </div>
 </div>
 
-<!-- ====================================================
-     LEGEND
-==================================================== -->
+<!-- ── LEGEND ── -->
 <div class="legend-bar">
   <div class="legend-inner">
     <span class="legend-title">Categories</span>
@@ -752,29 +490,42 @@
   </div>
 </div>
 
-<!-- ====================================================
-     MAIN
-==================================================== -->
+<!-- ── MAIN ── -->
 <main>
   <div class="results-row">
     <span id="results-count"></span>
     <div class="toolbar-right">
-      <button class="toolbar-btn" id="btn-csv" title="Export filtered list as CSV">
+      <!-- REFRESH ALL BUTTON -->
+      <button class="toolbar-btn btn-refresh-all" id="btn-refresh-all" title="Fetch live data from CRAN API, CRAN logs and GitHub">
+        <svg id="refresh-icon" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
+          <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+        </svg>
+        <span id="refresh-label">Refresh from CRAN &amp; GitHub</span>
+      </button>
+      <div id="last-refreshed">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span id="last-refreshed-time"></span>
+      </div>
+      <div class="filter-sep"></div>
+      <!-- EXPORT CSV -->
+      <button class="toolbar-btn" id="btn-csv">
         <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
           <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
         Export CSV
       </button>
-      <span style="font-size:11.5px;color:var(--text-3)">CRAN logs 2020–Mar 2026</span>
+      <span style="font-size:11px;color:var(--text-3)">CRAN logs 2020–present</span>
     </div>
   </div>
+
   <div id="package-grid"></div>
 </main>
 
-<!-- ====================================================
-     FOOTER
-==================================================== -->
+<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-logo">
     <svg height="26" viewBox="0 0 260 46" xmlns="http://www.w3.org/2000/svg">
@@ -784,33 +535,31 @@
       <rect x="0"  y="29" width="12" height="5.5" rx="2.75" fill="#8C2222" opacity=".7"/>
       <rect x="0"  y="38" width="7"  height="5.5" rx="2.75" fill="#8C2222" opacity=".7"/>
       <rect x="37" y="0" width="1.5" height="46" rx=".75" fill="#737373" opacity=".5"/>
-      <text x="46" y="37" font-family="'Tenor Sans', Garamond, serif" font-size="34" fill="rgba(255,255,255,.7)">heoRlytics</text>
+      <text x="46" y="37" font-family="'Tenor Sans',Garamond,serif" font-size="34" fill="rgba(255,255,255,.7)">heoRlytics</text>
     </svg>
   </div>
   Built by <a href="https://www.heorlytics.com" target="_blank" rel="noopener">HeoRlytics</a> &middot;
-  Data: <a href="https://cran.r-project.org" target="_blank" rel="noopener">CRAN</a> &amp;
-  <a href="https://cranlogs.r-pkg.org" target="_blank" rel="noopener">CRAN logs</a> &middot;
-  <a href="https://r-hta.org" target="_blank" rel="noopener">R-HTA community</a> &middot;
+  Data: <a href="https://cran.r-project.org" target="_blank" rel="noopener">CRAN</a>,
+  <a href="https://cranlogs.r-pkg.org" target="_blank" rel="noopener">CRAN logs</a> &amp; GitHub &middot;
   Missing a package? <a href="mailto:shubhram.pandey@heorlytics.com">Contact us</a>
 </footer>
 
-<!-- ====================================================
-     BACK TO TOP
-==================================================== -->
+<!-- ── BACK TO TOP ── -->
 <button id="back-to-top" title="Back to top" aria-label="Back to top">
   <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
     <polyline points="18 15 12 9 6 15"/>
   </svg>
 </button>
 
-<!-- ====================================================
-     MODAL
-==================================================== -->
-<div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<!-- ── TOAST ── -->
+<div id="toast"></div>
+
+<!-- ── MODAL ── -->
+<div class="modal-backdrop" id="modal-backdrop">
   <div class="modal">
-    <button class="modal-close" id="close-modal" aria-label="Close">&times;</button>
-    <h2 id="modal-title">Submit a Package</h2>
-    <p>Know an R package that should be listed here? Fill in the details below and we'll review it for inclusion.</p>
+    <button class="modal-close" id="close-modal">&times;</button>
+    <h2>Submit a Package</h2>
+    <p>Know an R package that should be listed here? Fill in the details and we'll review it for inclusion.</p>
     <div class="form-row">
       <label for="f-name">Package name *</label>
       <input type="text" id="f-name" placeholder="e.g. heemod" />
@@ -836,7 +585,7 @@
     </div>
     <div class="form-row">
       <label for="f-desc">Why should it be included?</label>
-      <textarea id="f-desc" rows="3" placeholder="Brief description of what the package does and its relevance to HEOR…"></textarea>
+      <textarea id="f-desc" rows="3" placeholder="Brief description and relevance to HEOR…"></textarea>
     </div>
     <div class="modal-footer">
       <button class="btn-cancel" id="cancel-modal">Cancel</button>
@@ -850,10 +599,11 @@
   </div>
 </div>
 
+<!-- ================================================================
+     SCRIPT
+================================================================ -->
 <script>
-// ======================================================
-//  BRAND COLOURS per category
-// ======================================================
+// ── Brand colours per category
 const CAT_COLOURS = {
   "Cost-effectiveness modelling": "#285A84",
   "Survival analysis":            "#0d7377",
@@ -865,242 +615,176 @@ const CAT_COLOURS = {
   "Statistical methods":          "#4a5568"
 };
 
-// ======================================================
-//  PACKAGE DATA — real packages, real stats
-// ======================================================
+// ── Package data (stars = null until live refresh)
 const PACKAGES = [
-  // ── Cost-effectiveness modelling ──
-  { name:"heemod",      version:"1.1.0",   updated:"2025-06-16", category:"Cost-effectiveness modelling",
-    availability:"cran",
-    desc:"Markov state-transition models with PSA, DSA, and heterogeneity analysis. The most complete all-in-one health economic modelling framework on CRAN. Supports semi-Markov and non-homogeneous models.",
+  { name:"heemod",    version:"1.1.0",   updated:"2025-06-16", category:"Cost-effectiveness modelling",
+    availability:"cran", desc:"Markov state-transition models with PSA, DSA, and heterogeneity analysis. The most complete all-in-one health economic modelling framework on CRAN. Supports semi-Markov and non-homogeneous models.",
     authors:"Kevin Zarca, Antoine Filipovic-Pierucci",
-    cranUrl:"https://cran.r-project.org/package=heemod",
-    githubUrl:"https://github.com/aphp/heemod",
-    totalDownloads:66612, monthlyDownloads:877 },
+    cranUrl:"https://cran.r-project.org/package=heemod", githubUrl:"https://github.com/aphp/heemod",
+    totalDownloads:66612, monthlyDownloads:877, stars:null },
 
-  { name:"hesim",       version:"0.5.8",   updated:"2026-01-13", category:"Cost-effectiveness modelling",
-    availability:"cran",
-    desc:"Health economic simulation modelling — cohort discrete-time state transition models, partitioned survival models, and individual-level continuous-time models with PSA-ready outputs.",
+  { name:"hesim",     version:"0.5.8",   updated:"2026-01-13", category:"Cost-effectiveness modelling",
+    availability:"cran", desc:"Health economic simulation modelling — cohort discrete-time state transition models, partitioned survival models, and individual-level continuous-time models with PSA-ready outputs.",
     authors:"Devin Incerti, Jeroen P. Jansen",
-    cranUrl:"https://cran.r-project.org/package=hesim",
-    githubUrl:"https://github.com/hesim-dev/hesim",
-    totalDownloads:55266, monthlyDownloads:638 },
+    cranUrl:"https://cran.r-project.org/package=hesim", githubUrl:"https://github.com/hesim-dev/hesim",
+    totalDownloads:55266, monthlyDownloads:638, stars:null },
 
-  { name:"dampack",     version:"1.0.2",   updated:"2024-09-30", category:"Cost-effectiveness modelling",
-    availability:"cran",
-    desc:"Decision-analytic modelling: CEACs, CEAFs, tornado plots, EVPI, EVPPI, and net-monetary-benefit analysis. Strong companion to heemod for visualisation and sensitivity analysis.",
+  { name:"dampack",   version:"1.0.2",   updated:"2024-09-30", category:"Cost-effectiveness modelling",
+    availability:"cran", desc:"Decision-analytic modelling: CEACs, CEAFs, tornado plots, EVPI, EVPPI, and net-monetary-benefit analysis. Strong companion to heemod for visualisation and sensitivity analysis.",
     authors:"Fernando Alarid-Escudero, Eva Enns, David Garibay",
-    cranUrl:"https://cran.r-project.org/package=dampack",
-    githubUrl:"https://github.com/DARTH-git/dampack",
-    totalDownloads:26619, monthlyDownloads:535 },
+    cranUrl:"https://cran.r-project.org/package=dampack", githubUrl:"https://github.com/DARTH-git/dampack",
+    totalDownloads:26619, monthlyDownloads:535, stars:null },
 
-  { name:"rdecision",   version:"1.3.0",   updated:"2025-02-10", category:"Cost-effectiveness modelling",
-    availability:"cran",
-    desc:"Object-oriented framework for decision trees and semi-Markov models with probabilistic uncertainty distributions. Developed with NHS collaboration.",
+  { name:"rdecision",  version:"1.3.0",  updated:"2025-02-10", category:"Cost-effectiveness modelling",
+    availability:"cran", desc:"Object-oriented framework for decision trees and semi-Markov models with probabilistic uncertainty distributions. Developed with NHS collaboration.",
     authors:"Andrew Sims, Kim Fairbairn, Paola Cognigni",
-    cranUrl:"https://cran.r-project.org/package=rdecision",
-    githubUrl:"https://github.com/ajsims1704/rdecision",
-    totalDownloads:36168, monthlyDownloads:862 },
+    cranUrl:"https://cran.r-project.org/package=rdecision", githubUrl:"https://github.com/ajsims1704/rdecision",
+    totalDownloads:36168, monthlyDownloads:862, stars:null },
 
-  { name:"BCEA",        version:"2.4.83",  updated:"2025-11-26", category:"Cost-effectiveness modelling",
-    availability:"cran",
-    desc:"Bayesian cost-effectiveness analysis using the net-benefit framework. Computes optimal interventions with CEACs, CEAFs, EVPI, and full uncertainty summaries.",
+  { name:"BCEA",      version:"2.4.83",  updated:"2025-11-26", category:"Cost-effectiveness modelling",
+    availability:"cran", desc:"Bayesian cost-effectiveness analysis using the net-benefit framework. Computes optimal interventions with CEACs, CEAFs, EVPI, and full uncertainty summaries.",
     authors:"Gianluca Baio, Andrea Berardi, Anna Heath, Nathan Green",
-    cranUrl:"https://cran.r-project.org/package=BCEA",
-    githubUrl:"https://github.com/giabaio/BCEA",
-    totalDownloads:64870, monthlyDownloads:690 },
+    cranUrl:"https://cran.r-project.org/package=BCEA", githubUrl:"https://github.com/giabaio/BCEA",
+    totalDownloads:64870, monthlyDownloads:690, stars:null },
 
-  { name:"ICEinfer",    version:"1.3",     updated:"2020-10-12", category:"Cost-effectiveness modelling",
-    availability:"cran",
-    desc:"Incremental cost-effectiveness inference from two independent samples using bivariate bootstrap resampling, confidence regions, and acceptability curves.",
+  { name:"ICEinfer",  version:"1.3",     updated:"2020-10-12", category:"Cost-effectiveness modelling",
+    availability:"cran", desc:"Incremental cost-effectiveness inference from two independent samples using bivariate bootstrap resampling, confidence regions, and acceptability curves.",
     authors:"Bob Obenchain",
-    cranUrl:"https://cran.r-project.org/package=ICEinfer",
-    githubUrl:null,
-    totalDownloads:29041, monthlyDownloads:208 },
+    cranUrl:"https://cran.r-project.org/package=ICEinfer", githubUrl:null,
+    totalDownloads:29041, monthlyDownloads:208, stars:null },
 
-  // ── Survival analysis ──
-  { name:"survHE",      version:"2.0.51",  updated:"2026-01-15", category:"Survival analysis",
-    availability:"cran",
-    desc:"Survival analysis for health economic evaluation. Fits parametric models via MLE and Bayesian (MCMC/INLA) methods, aligned with NICE DSU TSD 14.",
+  { name:"survHE",    version:"2.0.51",  updated:"2026-01-15", category:"Survival analysis",
+    availability:"cran", desc:"Survival analysis for health economic evaluation. Fits parametric models via MLE and Bayesian (MCMC/INLA) methods, aligned with NICE DSU TSD 14.",
     authors:"Gianluca Baio, Andrea Berardi, Philip Cooney, Nathan Green",
-    cranUrl:"https://cran.r-project.org/package=survHE",
-    githubUrl:"https://github.com/giabaio/survHE",
-    totalDownloads:48433, monthlyDownloads:995 },
+    cranUrl:"https://cran.r-project.org/package=survHE", githubUrl:"https://github.com/giabaio/survHE",
+    totalDownloads:48433, monthlyDownloads:995, stars:null },
 
-  { name:"flexsurv",    version:"2.3.2",   updated:"2024-08-17", category:"Survival analysis",
-    availability:"cran",
-    desc:"Flexible parametric survival models: Royston-Parmar splines, generalised gamma, and multi-state models. The standard tool for survival extrapolation in oncology HTA submissions.",
+  { name:"flexsurv",  version:"2.3.2",   updated:"2024-08-17", category:"Survival analysis",
+    availability:"cran", desc:"Flexible parametric survival models: Royston-Parmar splines, generalised gamma, and multi-state models. The standard tool for survival extrapolation in oncology HTA submissions.",
     authors:"Christopher Jackson, Paul Metcalfe, Jordan Amdahl",
-    cranUrl:"https://cran.r-project.org/package=flexsurv",
-    githubUrl:"https://github.com/chjackson/flexsurv",
-    totalDownloads:521231, monthlyDownloads:11137 },
+    cranUrl:"https://cran.r-project.org/package=flexsurv", githubUrl:"https://github.com/chjackson/flexsurv",
+    totalDownloads:521231, monthlyDownloads:11137, stars:null },
 
-  { name:"survminer",   version:"0.5.2",   updated:"2026-02-25", category:"Survival analysis",
-    availability:"cran",
-    desc:"Publication-ready Kaplan-Meier plots using ggplot2. Adds risk tables, censoring marks, log-rank p-values, and pairwise comparisons. Standard for KM figures in HEOR dossiers.",
+  { name:"survminer", version:"0.5.2",   updated:"2026-02-25", category:"Survival analysis",
+    availability:"cran", desc:"Publication-ready Kaplan-Meier plots using ggplot2. Adds risk tables, censoring marks, log-rank p-values, and pairwise comparisons. Standard for KM figures in HEOR dossiers.",
     authors:"Alboukadel Kassambara, Marcin Kosinski, Przemyslaw Biecek",
-    cranUrl:"https://cran.r-project.org/package=survminer",
-    githubUrl:"https://github.com/kassambara/survminer",
-    totalDownloads:2551212, monthlyDownloads:58657 },
+    cranUrl:"https://cran.r-project.org/package=survminer", githubUrl:"https://github.com/kassambara/survminer",
+    totalDownloads:2551212, monthlyDownloads:58657, stars:null },
 
-  { name:"ggsurvfit",   version:"1.2.0",   updated:"2025-09-13", category:"Survival analysis",
-    availability:"cran",
-    desc:"Modern ggplot2-native survival figures with risk tables, quantile annotations, and pharmaverse compatibility. Growing alternative to survminer with cleaner ggplot2 integration.",
+  { name:"ggsurvfit",  version:"1.2.0",  updated:"2025-09-13", category:"Survival analysis",
+    availability:"cran", desc:"Modern ggplot2-native survival figures with risk tables, quantile annotations, and pharmaverse compatibility. Growing alternative to survminer with cleaner ggplot2 integration.",
     authors:"Daniel D. Sjoberg, Mark Baillie",
-    cranUrl:"https://cran.r-project.org/package=ggsurvfit",
-    githubUrl:"https://github.com/pharmaverse/ggsurvfit",
-    totalDownloads:236131, monthlyDownloads:7587 },
+    cranUrl:"https://cran.r-project.org/package=ggsurvfit", githubUrl:"https://github.com/pharmaverse/ggsurvfit",
+    totalDownloads:236131, monthlyDownloads:7587, stars:null },
 
-  { name:"IPDfromKM",   version:"0.1.10",  updated:"2020-11-11", category:"Survival analysis",
-    availability:"cran",
-    desc:"Reconstructs individual patient data (IPD) from published Kaplan-Meier curves using the Guyot (2012) iterative algorithm. Essential for NMA and economic modelling from published literature.",
+  { name:"IPDfromKM", version:"0.1.10",  updated:"2020-11-11", category:"Survival analysis",
+    availability:"cran", desc:"Reconstructs individual patient data (IPD) from published Kaplan-Meier curves using the Guyot (2012) iterative algorithm. Essential for NMA and economic modelling from published literature.",
     authors:"Na Liu, J. Jack Lee, Yanhong Zhou",
-    cranUrl:"https://cran.r-project.org/package=IPDfromKM",
-    githubUrl:null,
-    totalDownloads:25878, monthlyDownloads:717 },
+    cranUrl:"https://cran.r-project.org/package=IPDfromKM", githubUrl:null,
+    totalDownloads:25878, monthlyDownloads:717, stars:null },
 
-  // ── Network meta-analysis ──
-  { name:"netmeta",     version:"3.3-1",   updated:"2026-01-28", category:"Network meta-analysis",
-    availability:"cran",
-    desc:"Frequentist NMA using graph-theoretical methods. Provides SUCRA/P-scores, consistency evaluation, forest plots, league tables, and meta-regression. Most widely used NMA package on CRAN.",
+  { name:"netmeta",   version:"3.3-1",   updated:"2026-01-28", category:"Network meta-analysis",
+    availability:"cran", desc:"Frequentist NMA using graph-theoretical methods. Provides SUCRA/P-scores, consistency evaluation, forest plots, league tables, and meta-regression. Most widely used NMA package on CRAN.",
     authors:"Gerta Rücker, Guido Schwarzer, Orestis Efthimiou",
-    cranUrl:"https://cran.r-project.org/package=netmeta",
-    githubUrl:"https://github.com/guido-s/netmeta",
-    totalDownloads:420449, monthlyDownloads:20504 },
+    cranUrl:"https://cran.r-project.org/package=netmeta", githubUrl:"https://github.com/guido-s/netmeta",
+    totalDownloads:420449, monthlyDownloads:20504, stars:null },
 
-  { name:"gemtc",       version:"1.1-0",   updated:"2025-07-08", category:"Network meta-analysis",
-    availability:"cran",
-    desc:"Bayesian NMA via MCMC (JAGS). Implements the GeMTC framework for consistency/inconsistency models, heterogeneity assessment, and ranking probabilities. Used widely in NICE HTA submissions.",
+  { name:"gemtc",     version:"1.1-0",   updated:"2025-07-08", category:"Network meta-analysis",
+    availability:"cran", desc:"Bayesian NMA via MCMC (JAGS). Implements the GeMTC framework for consistency/inconsistency models, heterogeneity assessment, and ranking probabilities. Used widely in NICE HTA submissions.",
     authors:"Gert van Valkenhoef, Joel Kuiper",
-    cranUrl:"https://cran.r-project.org/package=gemtc",
-    githubUrl:"https://github.com/gertvv/gemtc",
-    totalDownloads:162888, monthlyDownloads:4173 },
+    cranUrl:"https://cran.r-project.org/package=gemtc", githubUrl:"https://github.com/gertvv/gemtc",
+    totalDownloads:162888, monthlyDownloads:4173, stars:null },
 
-  { name:"pcnetmeta",   version:"2.8",     updated:"2022-08-31", category:"Network meta-analysis",
-    availability:"cran",
-    desc:"Patient-centred Bayesian NMA using arm-based models for binary, continuous, and count outcomes. Implements both contrast-based and arm-based likelihood formulations.",
+  { name:"pcnetmeta", version:"2.8",     updated:"2022-08-31", category:"Network meta-analysis",
+    availability:"cran", desc:"Patient-centred Bayesian NMA using arm-based models for binary, continuous, and count outcomes. Implements contrast-based and arm-based likelihood formulations.",
     authors:"Lifeng Lin, Jing Zhang, Haitao Chu",
-    cranUrl:"https://cran.r-project.org/package=pcnetmeta",
-    githubUrl:null,
-    totalDownloads:41346, monthlyDownloads:458 },
+    cranUrl:"https://cran.r-project.org/package=pcnetmeta", githubUrl:null,
+    totalDownloads:41346, monthlyDownloads:458, stars:null },
 
-  { name:"multinma",    version:"0.8.1",   updated:"2025-05-31", category:"Network meta-analysis",
-    availability:"cran",
-    desc:"Bayesian NMA and meta-regression with IPD, aggregate data, or mixed data using Stan. Supports population-adjusted indirect comparisons, aligned with NICE DSU methods.",
+  { name:"multinma",  version:"0.8.1",   updated:"2025-05-31", category:"Network meta-analysis",
+    availability:"cran", desc:"Bayesian NMA and meta-regression with IPD, aggregate data, or mixed data using Stan. Supports population-adjusted indirect comparisons aligned with NICE DSU methods.",
     authors:"David M. Phillippo",
-    cranUrl:"https://cran.r-project.org/package=multinma",
-    githubUrl:"https://github.com/dmphillippo/multinma",
-    totalDownloads:44986, monthlyDownloads:1125 },
+    cranUrl:"https://cran.r-project.org/package=multinma", githubUrl:"https://github.com/dmphillippo/multinma",
+    totalDownloads:44986, monthlyDownloads:1125, stars:null },
 
-  // ── Quality of life & utility ──
-  { name:"eq5d",        version:"0.16.2",  updated:"2026-02-27", category:"Quality of life & utility",
-    availability:"cran",
-    desc:"Calculates EQ-5D-3L, EQ-5D-5L, and EQ-5D-Y index scores using all major country value sets. Includes DSU mappings, EQ-5D crosswalk, and a built-in Shiny web app.",
+  { name:"eq5d",      version:"0.16.2",  updated:"2026-02-27", category:"Quality of life & utility",
+    availability:"cran", desc:"Calculates EQ-5D-3L, EQ-5D-5L, and EQ-5D-Y index scores using all major country value sets. Includes DSU mappings, EQ-5D crosswalk, and a built-in Shiny web app.",
     authors:"Fraser Morton, Jagtar Singh Nijjar",
-    cranUrl:"https://cran.r-project.org/package=eq5d",
-    githubUrl:"https://github.com/fragla/eq5d",
-    totalDownloads:84337, monthlyDownloads:1700 },
+    cranUrl:"https://cran.r-project.org/package=eq5d", githubUrl:"https://github.com/fragla/eq5d",
+    totalDownloads:84337, monthlyDownloads:1700, stars:null },
 
-  { name:"PROscorer",   version:"0.0.4",   updated:"2023-10-16", category:"Quality of life & utility",
-    availability:"cran",
-    desc:"Extensible scoring functions for patient-reported outcome instruments including SF-36, PROMIS, and other psychometric tools used in clinical trials and HTA submissions.",
+  { name:"PROscorer", version:"0.0.4",   updated:"2023-10-16", category:"Quality of life & utility",
+    availability:"cran", desc:"Extensible scoring functions for patient-reported outcome instruments including SF-36, PROMIS, and other psychometric tools used in clinical trials and HTA submissions.",
     authors:"Ray Baser",
-    cranUrl:"https://cran.r-project.org/package=PROscorer",
-    githubUrl:"https://github.com/raybaser/PROscorer",
-    totalDownloads:25286, monthlyDownloads:262 },
+    cranUrl:"https://cran.r-project.org/package=PROscorer", githubUrl:"https://github.com/raybaser/PROscorer",
+    totalDownloads:25286, monthlyDownloads:262, stars:null },
 
-  { name:"QoLR",        version:"1.0.3",   updated:"2017-05-02", category:"Quality of life & utility",
-    availability:"cran",
-    desc:"HRQoL analysis in oncology trials. Generates EORTC QLQ-C30 scores and determines time to quality-of-life deterioration in longitudinal analyses.",
+  { name:"QoLR",      version:"1.0.3",   updated:"2017-05-02", category:"Quality of life & utility",
+    availability:"cran", desc:"HRQoL analysis in oncology trials. Generates EORTC QLQ-C30 scores and determines time to quality-of-life deterioration in longitudinal analyses.",
     authors:"Amelie Anota",
-    cranUrl:"https://cran.r-project.org/package=QoLR",
-    githubUrl:null,
-    totalDownloads:2840, monthlyDownloads:32 },
+    cranUrl:"https://cran.r-project.org/package=QoLR", githubUrl:null,
+    totalDownloads:2840, monthlyDownloads:32, stars:null },
 
-  // ── Treatment switching ──
-  { name:"trtswitch",   version:"0.2.5",   updated:"2026-03-13", category:"Treatment switching",
-    availability:"cran",
-    desc:"Comprehensive treatment switching adjustment for RCTs: RPSFTM, IPE, IPCW, marginal structural models, and two-stage estimation. Newly released (2024–25), actively maintained.",
+  { name:"trtswitch", version:"0.2.5",   updated:"2026-03-13", category:"Treatment switching",
+    availability:"cran", desc:"Comprehensive treatment switching adjustment for RCTs: RPSFTM, IPE, IPCW, marginal structural models, and two-stage estimation. Newly released (2024–25), actively maintained.",
     authors:"Kaifeng Lu",
-    cranUrl:"https://cran.r-project.org/package=trtswitch",
-    githubUrl:"https://github.com/kaifenglu/trtswitch",
-    totalDownloads:6628, monthlyDownloads:426 },
+    cranUrl:"https://cran.r-project.org/package=trtswitch", githubUrl:"https://github.com/kaifenglu/trtswitch",
+    totalDownloads:6628, monthlyDownloads:426, stars:null },
 
-  { name:"rpsftm",      version:"1.2.9",   updated:"2024-03-12", category:"Treatment switching",
-    availability:"cran",
-    desc:"Rank-preserving structural failure time model (Robins & Tsiatis 1991) for adjusting treatment effect estimates in RCTs with crossover, using g-estimation and AFT models.",
+  { name:"rpsftm",    version:"1.2.9",   updated:"2024-03-12", category:"Treatment switching",
+    availability:"cran", desc:"Rank-preserving structural failure time model (Robins & Tsiatis 1991) for adjusting treatment effect estimates in RCTs with crossover, using g-estimation and AFT models.",
     authors:"Simon Bond, Annabel Allison",
-    cranUrl:"https://cran.r-project.org/package=rpsftm",
-    githubUrl:null,
-    totalDownloads:31514, monthlyDownloads:274 },
+    cranUrl:"https://cran.r-project.org/package=rpsftm", githubUrl:null,
+    totalDownloads:31514, monthlyDownloads:274, stars:null },
 
-  // ── Population adjustment ──
-  { name:"maic",        version:"0.1.4",   updated:"2022-04-27", category:"Population adjustment",
-    availability:"cran",
-    desc:"Matching-adjusted indirect comparison (MAIC) for unanchored indirect comparisons where IPD is available for one study. Implements NICE DSU TSD 18 weighting methodology.",
+  { name:"maic",      version:"0.1.4",   updated:"2022-04-27", category:"Population adjustment",
+    availability:"cran", desc:"Matching-adjusted indirect comparison (MAIC) for unanchored indirect comparisons where IPD is available for one study. Implements NICE DSU TSD 18 weighting methodology.",
     authors:"Rob Young (HEOR Ltd)",
-    cranUrl:"https://cran.r-project.org/package=maic",
-    githubUrl:"https://github.com/heorltd/maic",
-    totalDownloads:21631, monthlyDownloads:61 },
+    cranUrl:"https://cran.r-project.org/package=maic", githubUrl:"https://github.com/heorltd/maic",
+    totalDownloads:21631, monthlyDownloads:61, stars:null },
 
-  { name:"WeightIt",    version:"1.6.0",   updated:"2026-03-19", category:"Population adjustment",
-    availability:"cran",
-    desc:"Balancing weights for causal effect estimation in observational studies. Supports entropy balancing, CBPS, propensity scores, and more — applicable to RWE and MAIC-adjacent workflows.",
+  { name:"WeightIt",  version:"1.6.0",   updated:"2026-03-19", category:"Population adjustment",
+    availability:"cran", desc:"Balancing weights for causal effect estimation in observational studies. Supports entropy balancing, CBPS, propensity scores, and more — applicable to RWE and MAIC-adjacent workflows.",
     authors:"Noah Greifer",
-    cranUrl:"https://cran.r-project.org/package=WeightIt",
-    githubUrl:"https://github.com/ngreifer/WeightIt",
-    totalDownloads:249534, monthlyDownloads:8163 },
+    cranUrl:"https://cran.r-project.org/package=WeightIt", githubUrl:"https://github.com/ngreifer/WeightIt",
+    totalDownloads:249534, monthlyDownloads:8163, stars:null },
 
-  { name:"MatchIt",     version:"4.7.2",   updated:"2025-05-30", category:"Population adjustment",
-    availability:"cran",
-    desc:"Nonparametric matching for causal inference. Supports propensity score, Mahalanobis, exact, and genetic matching. Standard for comparative effectiveness research and RWE studies.",
+  { name:"MatchIt",   version:"4.7.2",   updated:"2025-05-30", category:"Population adjustment",
+    availability:"cran", desc:"Nonparametric matching for causal inference. Supports propensity score, Mahalanobis, exact, and genetic matching. Standard for comparative effectiveness research and RWE studies.",
     authors:"Daniel Ho, Kosuke Imai, Gary King, Noah Greifer",
-    cranUrl:"https://cran.r-project.org/package=MatchIt",
-    githubUrl:"https://github.com/kosukeimai/MatchIt",
-    totalDownloads:1962152, monthlyDownloads:23569 },
+    cranUrl:"https://cran.r-project.org/package=MatchIt", githubUrl:"https://github.com/kosukeimai/MatchIt",
+    totalDownloads:1962152, monthlyDownloads:23569, stars:null },
 
-  { name:"cobalt",      version:"4.6.2",   updated:"2026-01-29", category:"Population adjustment",
-    availability:"cran",
-    desc:"Covariate balance tables and love plots for matching, weighting, or subclassification. Integrates with MatchIt, WeightIt, and others. Essential for MAIC and RWE balance diagnostics.",
+  { name:"cobalt",    version:"4.6.2",   updated:"2026-01-29", category:"Population adjustment",
+    availability:"cran", desc:"Covariate balance tables and love plots for matching, weighting, or subclassification. Integrates with MatchIt, WeightIt, and others. Essential for MAIC and RWE balance diagnostics.",
     authors:"Noah Greifer",
-    cranUrl:"https://cran.r-project.org/package=cobalt",
-    githubUrl:"https://github.com/ngreifer/cobalt",
-    totalDownloads:629088, monthlyDownloads:16746 },
+    cranUrl:"https://cran.r-project.org/package=cobalt", githubUrl:"https://github.com/ngreifer/cobalt",
+    totalDownloads:629088, monthlyDownloads:16746, stars:null },
 
-  // ── Value of information ──
-  { name:"voi",         version:"1.0.3",   updated:"2024-09-16", category:"Value of information",
-    availability:"cran",
-    desc:"Expected value of information for health economic models: EVPI, EVPPI, EVSI, and ENBS with multiple methods (GAM, moment-matching). Aligned with NICE DSU TSD 7 and TSD 36.",
+  { name:"voi",       version:"1.0.3",   updated:"2024-09-16", category:"Value of information",
+    availability:"cran", desc:"Expected value of information for health economic models: EVPI, EVPPI, EVSI, and ENBS with multiple methods (GAM, moment-matching). Aligned with NICE DSU TSD 7 and TSD 36.",
     authors:"Christopher Jackson, Anna Heath, Gianluca Baio, Mark Strong",
-    cranUrl:"https://cran.r-project.org/package=voi",
-    githubUrl:"https://github.com/chjackson/voi",
-    totalDownloads:18001, monthlyDownloads:489 },
+    cranUrl:"https://cran.r-project.org/package=voi", githubUrl:"https://github.com/chjackson/voi",
+    totalDownloads:18001, monthlyDownloads:489, stars:null },
 
-  // ── Statistical methods ──
-  { name:"meta",        version:"8.2-1",   updated:"2025-09-01", category:"Statistical methods",
-    availability:"cran",
-    desc:"General meta-analysis with common-effect and random-effects models, forest plots, funnel plots, meta-regression, subgroup analysis, and Bayesian models. Foundation for HEOR evidence synthesis.",
+  { name:"meta",      version:"8.2-1",   updated:"2025-09-01", category:"Statistical methods",
+    availability:"cran", desc:"General meta-analysis with common-effect and random-effects models, forest plots, funnel plots, meta-regression, subgroup analysis, and Bayesian models. Foundation for HEOR evidence synthesis.",
     authors:"Guido Schwarzer",
-    cranUrl:"https://cran.r-project.org/package=meta",
-    githubUrl:"https://github.com/guido-s/meta",
-    totalDownloads:1542491, monthlyDownloads:37192 },
+    cranUrl:"https://cran.r-project.org/package=meta", githubUrl:"https://github.com/guido-s/meta",
+    totalDownloads:1542491, monthlyDownloads:37192, stars:null },
 
-  { name:"metafor",     version:"4.8-0",   updated:"2025-01-28", category:"Statistical methods",
-    availability:"cran",
-    desc:"Comprehensive meta-analysis: effect size calculations, fixed/random-effects models, moderator analysis, publication bias tests (Egger, trim-and-fill), and extensive visualisation.",
+  { name:"metafor",   version:"4.8-0",   updated:"2025-01-28", category:"Statistical methods",
+    availability:"cran", desc:"Comprehensive meta-analysis: effect size calculations, fixed/random-effects models, moderator analysis, publication bias tests (Egger, trim-and-fill), and extensive visualisation.",
     authors:"Wolfgang Viechtbauer",
-    cranUrl:"https://cran.r-project.org/package=metafor",
-    githubUrl:"https://github.com/wviechtb/metafor",
-    totalDownloads:1872680, monthlyDownloads:37160 }
+    cranUrl:"https://cran.r-project.org/package=metafor", githubUrl:"https://github.com/wviechtb/metafor",
+    totalDownloads:1872680, monthlyDownloads:37160, stars:null }
 ];
 
-// ======================================================
-//  HELPERS
-// ======================================================
-const MAX_DL = Math.max(...PACKAGES.map(p => p.totalDownloads));
-const TOTAL_DL = PACKAGES.reduce((s, p) => s + p.totalDownloads, 0);
+// ── Helpers
+let maxDL = Math.max(...PACKAGES.map(p => p.totalDownloads));
 
 function fmtNum(n) {
+  if (!n && n !== 0) return "—";
   if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
   if (n >= 1e3) return (n / 1e3).toFixed(0) + "K";
   return n.toString();
@@ -1109,58 +793,61 @@ function fmtDate(d) {
   if (!d) return "—";
   return new Date(d).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
 }
-function icon(d) { // tiny inline SVG icons
-  const icons = {
-    cran: `<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
-    github: `<svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>`
-  };
-  return icons[d] || "";
+function todayISO() { return new Date().toISOString().split("T")[0]; }
+function ghRepoPath(url) {
+  if (!url) return null;
+  const m = url.match(/github\.com\/([^/?#]+\/[^/?#]+)/);
+  return m ? m[1].replace(/\.git$/, "") : null;
 }
 
-// ======================================================
-//  INIT — populate category select + legend
-// ======================================================
-document.getElementById("stat-downloads").textContent = fmtNum(TOTAL_DL);
+// ── Toast
+let toastTimer;
+function showToast(msg, isError = false) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className = "show" + (isError ? " error" : "");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = ""; }, 3500);
+}
 
+// ── Init — category select + legend
 const categories = [...new Set(PACKAGES.map(p => p.category))];
 const catSelect = document.getElementById("cat-select");
 categories.forEach(cat => {
   const cnt = PACKAGES.filter(p => p.category === cat).length;
   const opt = document.createElement("option");
-  opt.value = cat;
-  opt.textContent = `${cat} (${cnt})`;
+  opt.value = cat; opt.textContent = `${cat} (${cnt})`;
   catSelect.appendChild(opt);
 });
-
 const legendEl = document.getElementById("legend");
-legendEl.style.cssText = "display:flex;gap:.5rem .9rem;flex-wrap:wrap;align-items:center";
+legendEl.style.cssText = "display:flex;gap:.4rem .9rem;flex-wrap:wrap;align-items:center";
 Object.entries(CAT_COLOURS).forEach(([cat, colour]) => {
   const cnt = PACKAGES.filter(p => p.category === cat).length;
   if (!cnt) return;
   const el = document.createElement("div");
   el.className = "legend-item";
   el.innerHTML = `<div class="legend-dot" style="background:${colour}"></div>${cat} <span style="color:var(--text-3);font-size:10.5px">(${cnt})</span>`;
-  el.title = `Filter: ${cat}`;
-  el.addEventListener("click", () => {
-    catSelect.value = cat;
-    activeCategory = cat;
-    render();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+  el.addEventListener("click", () => { catSelect.value = cat; activeCategory = cat; render(); window.scrollTo({top:0,behavior:"smooth"}); });
   legendEl.appendChild(el);
 });
 
-// ======================================================
-//  STATE
-// ======================================================
+// ── Header total downloads
+function updateHeaderStats() {
+  const total = PACKAGES.reduce((s, p) => s + (p.totalDownloads || 0), 0);
+  document.getElementById("stat-downloads").textContent = fmtNum(total);
+  maxDL = Math.max(...PACKAGES.map(p => p.totalDownloads || 0));
+}
+updateHeaderStats();
+
+// ── State
 let activeCategory = "all";
-let activeAvail = "all";
-let searchQuery = "";
-let sortMode = "downloads_total";
+let activeAvail    = "all";
+let searchQuery    = "";
+let sortMode       = "downloads_total";
+let _lastFiltered  = [];
 
 catSelect.addEventListener("change", e => { activeCategory = e.target.value; render(); });
 document.getElementById("sort-select").addEventListener("change", e => { sortMode = e.target.value; render(); });
-
 document.querySelectorAll("[data-avail]").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll("[data-avail]").forEach(b => b.classList.remove("active"));
@@ -1169,31 +856,19 @@ document.querySelectorAll("[data-avail]").forEach(btn => {
     render();
   });
 });
-
 const searchEl = document.getElementById("search");
 searchEl.addEventListener("input", e => { searchQuery = e.target.value.toLowerCase().trim(); render(); });
-
-// "/" key focuses search
 document.addEventListener("keydown", e => {
-  if (e.key === "/" && document.activeElement !== searchEl) {
-    e.preventDefault();
-    searchEl.focus();
-    searchEl.select();
-  }
-  if (e.key === "Escape") {
-    closeModal();
-    searchEl.blur();
-  }
+  if (e.key === "/" && document.activeElement !== searchEl) { e.preventDefault(); searchEl.focus(); searchEl.select(); }
+  if (e.key === "Escape") { closeModal(); searchEl.blur(); }
 });
 
-// ======================================================
-//  FILTER + SORT
-// ======================================================
+// ── Filter + sort
 function filterPackages() {
   return PACKAGES.filter(pkg => {
     if (activeCategory !== "all" && pkg.category !== activeCategory) return false;
-    if (activeAvail === "cran"   && pkg.availability !== "cran")  return false;
-    if (activeAvail === "github" && !pkg.githubUrl)               return false;
+    if (activeAvail === "cran"   && pkg.availability !== "cran") return false;
+    if (activeAvail === "github" && !pkg.githubUrl) return false;
     if (searchQuery) {
       const hay = [pkg.name, pkg.category, pkg.desc, pkg.authors].join(" ").toLowerCase();
       if (!hay.includes(searchQuery)) return false;
@@ -1201,74 +876,78 @@ function filterPackages() {
     return true;
   });
 }
-
 function sortPackages(pkgs) {
   return [...pkgs].sort((a, b) => {
-    if (sortMode === "downloads_total")   return b.totalDownloads - a.totalDownloads;
-    if (sortMode === "downloads_monthly") return b.monthlyDownloads - a.monthlyDownloads;
+    if (sortMode === "downloads_total")   return (b.totalDownloads||0) - (a.totalDownloads||0);
+    if (sortMode === "downloads_monthly") return (b.monthlyDownloads||0) - (a.monthlyDownloads||0);
     if (sortMode === "name")              return a.name.localeCompare(b.name);
-    if (sortMode === "date")              return new Date(b.updated) - new Date(a.updated);
+    if (sortMode === "date")              return new Date(b.updated||0) - new Date(a.updated||0);
     if (sortMode === "category")          return a.category.localeCompare(b.category) || a.name.localeCompare(b.name);
+    if (sortMode === "stars")             return (b.stars||0) - (a.stars||0);
     return 0;
   });
 }
 
-// ======================================================
-//  RENDER
-// ======================================================
-let _lastFiltered = [];
-
+// ── Render
 function render() {
   const filtered = sortPackages(filterPackages());
   _lastFiltered = filtered;
   const grid = document.getElementById("package-grid");
   document.getElementById("results-count").textContent =
     `Showing ${filtered.length} of ${PACKAGES.length} packages`;
-
   if (!filtered.length) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24" style="margin:0 auto .75rem;display:block;color:var(--text-3)">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <h3>No packages found</h3>
-        <p style="margin-top:.3rem;color:var(--text-3)">Try different keywords or clear your filters.</p>
-      </div>`;
+    grid.innerHTML = `<div class="empty-state">
+      <svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24" style="margin:0 auto .75rem;display:block;color:var(--text-3)">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <h3>No packages found</h3>
+      <p style="margin-top:.3rem;color:var(--text-3)">Try different keywords or clear your filters.</p>
+    </div>`;
     return;
   }
-
   grid.innerHTML = filtered.map(renderCard).join("");
 }
 
 function renderCard(pkg) {
   const accent = CAT_COLOURS[pkg.category] || "#285A84";
-  const barW   = Math.round((pkg.totalDownloads / MAX_DL) * 100);
-
+  const barW   = Math.round(((pkg.totalDownloads||0) / maxDL) * 100);
   const cranBtn = pkg.cranUrl
-    ? `<a class="link-btn btn-cran" href="${pkg.cranUrl}" target="_blank" rel="noopener">${icon("cran")} CRAN</a>` : "";
+    ? `<a class="link-btn btn-cran" href="${pkg.cranUrl}" target="_blank" rel="noopener">
+         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> CRAN
+       </a>` : "";
   const ghBtn = pkg.githubUrl
-    ? `<a class="link-btn btn-github" href="${pkg.githubUrl}" target="_blank" rel="noopener">${icon("github")} GitHub</a>` : "";
+    ? `<a class="link-btn btn-github" href="${pkg.githubUrl}" target="_blank" rel="noopener">
+         <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> GitHub
+       </a>` : "";
+  const starsHtml = pkg.stars != null
+    ? `<span class="badge b-stars">
+         <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+         ${pkg.stars.toLocaleString()}
+       </span>` : "";
   const copyCmd = `install.packages("${pkg.name}")`;
+  const escapedName = pkg.name.replace(/"/g, '\\"');
 
   return `
-  <div class="pkg-card" style="--card-accent:${accent}">
+  <div class="pkg-card" id="card-${pkg.name}" style="--card-accent:${accent}">
     <div class="card-head">
       <span class="pkg-name">
-        ${pkg.cranUrl
-          ? `<a href="${pkg.cranUrl}" target="_blank" rel="noopener">${pkg.name}</a>`
-          : pkg.name}
+        ${pkg.cranUrl ? `<a href="${pkg.cranUrl}" target="_blank" rel="noopener">${pkg.name}</a>` : pkg.name}
       </span>
       <div class="badge-row">
         <span class="badge b-version">v${pkg.version}</span>
-        <span class="badge ${pkg.availability === 'cran' ? 'b-cran' : 'b-github'}">
-          ${pkg.availability === 'cran' ? 'CRAN' : 'GitHub'}
-        </span>
+        <span class="badge ${pkg.availability === 'cran' ? 'b-cran' : 'b-github'}">${pkg.availability === 'cran' ? 'CRAN' : 'GitHub'}</span>
+        ${starsHtml}
+        <button class="btn-card-refresh" id="card-refresh-${pkg.name}"
+          onclick="refreshSingle('${escapedName}')" title="Refresh this package from CRAN &amp; GitHub">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
+            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+          </svg>
+        </button>
       </div>
     </div>
-
     <div class="pkg-category">${pkg.category}</div>
     <div class="pkg-desc">${pkg.desc}</div>
-
     <div class="pkg-meta">
       <div class="meta-item">
         <span class="meta-label">Authors</span>
@@ -1279,10 +958,9 @@ function renderCard(pkg) {
         <span class="meta-value">${fmtDate(pkg.updated)}</span>
       </div>
     </div>
-
     <div class="dl-section">
       <div class="dl-row">
-        <span class="dl-label">Total downloads (2020–2026)</span>
+        <span class="dl-label">Total downloads (2020–present)</span>
         <span class="dl-num">${fmtNum(pkg.totalDownloads)}</span>
       </div>
       <div class="dl-bar-bg">
@@ -1293,10 +971,8 @@ function renderCard(pkg) {
         <span class="dl-monthly-label">downloads last 30 days</span>
       </div>
     </div>
-
     <div class="card-footer">
-      ${cranBtn}
-      ${ghBtn}
+      ${cranBtn}${ghBtn}
       <button class="link-btn btn-copy"
         onclick="navigator.clipboard.writeText('${copyCmd}').then(()=>{this.textContent='✓ Copied!';setTimeout(()=>this.textContent='Copy install',1600)})"
         title="${copyCmd}">Copy install</button>
@@ -1304,71 +980,253 @@ function renderCard(pkg) {
   </div>`;
 }
 
-// ======================================================
-//  EXPORT CSV
-// ======================================================
+// ================================================================
+//  LIVE REFRESH FUNCTIONS
+// ================================================================
+
+// ── Set progress bar
+function setProgress(pct, indeterminate = false) {
+  const bar = document.getElementById("refresh-progress-bar");
+  const fill = document.getElementById("refresh-progress-fill");
+  bar.classList.add("active");
+  if (indeterminate) {
+    fill.classList.add("indeterminate");
+  } else {
+    fill.classList.remove("indeterminate");
+    fill.style.width = pct + "%";
+    if (pct >= 100) setTimeout(() => bar.classList.remove("active"), 600);
+  }
+}
+function hideProgress() {
+  const bar = document.getElementById("refresh-progress-bar");
+  const fill = document.getElementById("refresh-progress-fill");
+  fill.classList.remove("indeterminate");
+  fill.style.width = "100%";
+  setTimeout(() => { bar.classList.remove("active"); fill.style.width = "0%"; }, 500);
+}
+
+// ── Fetch helpers (with timeout + graceful fallback)
+async function fetchJSON(url, timeoutMs = 8000) {
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const r = await fetch(url, { signal: ctrl.signal });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return await r.json();
+  } finally {
+    clearTimeout(tid);
+  }
+}
+
+// ── REFRESH ALL
+async function refreshAll() {
+  const btn   = document.getElementById("btn-refresh-all");
+  const label = document.getElementById("refresh-label");
+  const icon  = document.getElementById("refresh-icon");
+  btn.disabled = true;
+  icon.classList.add("spin");
+  btn.classList.add("loading");
+
+  try {
+    // ── Step 1: batch download counts (fast — 2 requests for all packages)
+    label.textContent = "Fetching download stats…";
+    setProgress(0, true);
+    const today = todayISO();
+    const names = PACKAGES.map(p => p.name).join(",");
+
+    const [monthly, total] = await Promise.allSettled([
+      fetchJSON(`https://cranlogs.r-pkg.org/downloads/total/last-month/${names}`),
+      fetchJSON(`https://cranlogs.r-pkg.org/downloads/total/2020-01-01:${today}/${names}`)
+    ]);
+
+    if (monthly.status === "fulfilled" && Array.isArray(monthly.value)) {
+      monthly.value.forEach(d => {
+        const pkg = PACKAGES.find(p => p.name === d.package);
+        if (pkg && d.downloads != null) pkg.monthlyDownloads = d.downloads;
+      });
+    }
+    if (total.status === "fulfilled" && Array.isArray(total.value)) {
+      total.value.forEach(d => {
+        const pkg = PACKAGES.find(p => p.name === d.package);
+        if (pkg && d.downloads != null) pkg.totalDownloads = d.downloads;
+      });
+    }
+
+    // ── Step 2: CRAN package versions (parallel individual calls)
+    label.textContent = "Fetching CRAN versions…";
+    setProgress(30);
+    await Promise.allSettled(PACKAGES.map(async pkg => {
+      try {
+        const data = await fetchJSON(`https://crandb.r-pkg.org/${pkg.name}`);
+        if (data.Version) pkg.version = data.Version;
+        const pub = data["Date/Publication"] || data.Published;
+        if (pub) pkg.updated = pub.split("T")[0].split(" ")[0];
+      } catch { /* silently skip */ }
+    }));
+
+    // ── Step 3: GitHub stars (parallel — only packages with GitHub URL)
+    label.textContent = "Fetching GitHub stars…";
+    setProgress(65);
+    const ghPkgs = PACKAGES.filter(p => ghRepoPath(p.githubUrl));
+    await Promise.allSettled(ghPkgs.map(async pkg => {
+      try {
+        const repo = ghRepoPath(pkg.githubUrl);
+        const data = await fetchJSON(`https://api.github.com/repos/${repo}`);
+        if (data.stargazers_count != null) pkg.stars = data.stargazers_count;
+        // prefer GitHub push date for recently-active packages
+        if (data.pushed_at) {
+          const ghDate = data.pushed_at.split("T")[0];
+          if (!pkg.updated || ghDate > pkg.updated) pkg.updated = ghDate;
+        }
+      } catch { /* silently skip */ }
+    }));
+
+    // ── Done
+    hideProgress();
+    updateHeaderStats();
+    render();
+
+    // Update header "data as of" date
+    const now = new Date().toLocaleDateString("en-GB", { day:"numeric", month:"short", year:"numeric" });
+    document.getElementById("stat-refreshed").textContent = now;
+
+    // Show last-refreshed chip
+    const lrEl = document.getElementById("last-refreshed");
+    document.getElementById("last-refreshed-time").textContent =
+      `Updated ${new Date().toLocaleTimeString("en-GB", {hour:"2-digit", minute:"2-digit"})}`;
+    lrEl.classList.add("visible");
+
+    label.textContent = "✓ Data refreshed";
+    showToast(`✓ All ${PACKAGES.length} packages refreshed from CRAN & GitHub`);
+    setTimeout(() => { label.textContent = "Refresh from CRAN & GitHub"; }, 4000);
+
+  } catch (err) {
+    hideProgress();
+    label.textContent = "⚠ Retry refresh";
+    showToast("⚠ Refresh failed — check your connection", true);
+    setTimeout(() => { label.textContent = "Refresh from CRAN & GitHub"; }, 4000);
+    console.error("Refresh error:", err);
+  } finally {
+    btn.disabled = false;
+    icon.classList.remove("spin");
+    btn.classList.remove("loading");
+  }
+}
+
+// ── REFRESH SINGLE CARD
+async function refreshSingle(pkgName) {
+  const pkg    = PACKAGES.find(p => p.name === pkgName);
+  const cardEl = document.getElementById(`card-${pkgName}`);
+  const btnEl  = document.getElementById(`card-refresh-${pkgName}`);
+  if (!pkg) return;
+
+  // Show loading state on card
+  if (cardEl) cardEl.classList.add("card-loading");
+  if (btnEl)  { btnEl.disabled = true; btnEl.innerHTML = '<span class="spin" style="font-size:11px;line-height:1">↻</span>'; }
+
+  try {
+    const today = todayISO();
+    const [cranRes, monthlyRes, totalRes] = await Promise.allSettled([
+      fetchJSON(`https://crandb.r-pkg.org/${pkgName}`),
+      fetchJSON(`https://cranlogs.r-pkg.org/downloads/total/last-month/${pkgName}`),
+      fetchJSON(`https://cranlogs.r-pkg.org/downloads/total/2020-01-01:${today}/${pkgName}`)
+    ]);
+
+    if (cranRes.status === "fulfilled") {
+      const d = cranRes.value;
+      if (d.Version) pkg.version = d.Version;
+      const pub = d["Date/Publication"] || d.Published;
+      if (pub) pkg.updated = pub.split("T")[0].split(" ")[0];
+    }
+    if (monthlyRes.status === "fulfilled" && Array.isArray(monthlyRes.value)) {
+      const d = monthlyRes.value[0];
+      if (d && d.downloads != null) pkg.monthlyDownloads = d.downloads;
+    }
+    if (totalRes.status === "fulfilled" && Array.isArray(totalRes.value)) {
+      const d = totalRes.value[0];
+      if (d && d.downloads != null) pkg.totalDownloads = d.downloads;
+    }
+
+    // GitHub stars
+    const repo = ghRepoPath(pkg.githubUrl);
+    if (repo) {
+      try {
+        const ghData = await fetchJSON(`https://api.github.com/repos/${repo}`);
+        if (ghData.stargazers_count != null) pkg.stars = ghData.stargazers_count;
+        if (ghData.pushed_at) {
+          const ghDate = ghData.pushed_at.split("T")[0];
+          if (!pkg.updated || ghDate > pkg.updated) pkg.updated = ghDate;
+        }
+      } catch { /* skip */ }
+    }
+
+    // Re-render this card
+    updateHeaderStats();
+    if (cardEl) {
+      cardEl.classList.remove("card-loading");
+      cardEl.outerHTML = renderCard(pkg);
+      // Flash green
+      const newCard = document.getElementById(`card-${pkgName}`);
+      if (newCard) {
+        newCard.classList.add("card-refreshed");
+        setTimeout(() => newCard.classList.remove("card-refreshed"), 700);
+      }
+    }
+    showToast(`✓ ${pkgName} updated`);
+
+  } catch (err) {
+    if (cardEl) cardEl.classList.remove("card-loading");
+    if (btnEl) {
+      btnEl.disabled = false;
+      btnEl.innerHTML = `<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>`;
+    }
+    showToast(`⚠ Could not refresh ${pkgName}`, true);
+    console.error(`Refresh error for ${pkgName}:`, err);
+  }
+}
+
+// Attach global refresh button
+document.getElementById("btn-refresh-all").addEventListener("click", refreshAll);
+
+// ── Export CSV
 document.getElementById("btn-csv").addEventListener("click", () => {
-  const cols = ["name","version","category","availability","authors","updated","totalDownloads","monthlyDownloads","cranUrl","githubUrl"];
+  const cols = ["name","version","category","availability","authors","updated","totalDownloads","monthlyDownloads","stars","cranUrl","githubUrl"];
   const header = cols.join(",");
   const rows = _lastFiltered.map(p =>
-    cols.map(c => {
-      const v = p[c] ?? "";
-      return `"${String(v).replace(/"/g,'""')}"`;
-    }).join(",")
+    cols.map(c => { const v = p[c] ?? ""; return `"${String(v).replace(/"/g,'""')}"`; }).join(",")
   );
   const csv = [header, ...rows].join("\n");
-  const blob = new Blob([csv], { type: "text/csv" });
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "heor-r-packages.csv";
-  a.click();
+  a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv"}));
+  a.download = "heor-r-packages.csv"; a.click();
   URL.revokeObjectURL(a.href);
 });
 
-// ======================================================
-//  MODAL
-// ======================================================
+// ── Modal
 function openModal()  { document.getElementById("modal-backdrop").classList.add("open"); }
 function closeModal() { document.getElementById("modal-backdrop").classList.remove("open"); }
-
 document.getElementById("open-modal").addEventListener("click", openModal);
 document.getElementById("close-modal").addEventListener("click", closeModal);
 document.getElementById("cancel-modal").addEventListener("click", closeModal);
-document.getElementById("modal-backdrop").addEventListener("click", e => {
-  if (e.target === e.currentTarget) closeModal();
-});
-
+document.getElementById("modal-backdrop").addEventListener("click", e => { if (e.target === e.currentTarget) closeModal(); });
 document.getElementById("confirm-submit").addEventListener("click", () => {
-  const name  = document.getElementById("f-name").value.trim();
-  const url   = document.getElementById("f-url").value.trim();
-  const cat   = document.getElementById("f-cat").value;
-  const desc  = document.getElementById("f-desc").value.trim();
-
-  if (!name || !url) {
-    alert("Please fill in the package name and URL.");
-    return;
-  }
-
+  const name = document.getElementById("f-name").value.trim();
+  const url  = document.getElementById("f-url").value.trim();
+  const cat  = document.getElementById("f-cat").value;
+  const desc = document.getElementById("f-desc").value.trim();
+  if (!name || !url) { alert("Please fill in the package name and URL."); return; }
   const subject = encodeURIComponent(`Package submission: ${name}`);
-  const body = encodeURIComponent(
-    `Package name: ${name}\nURL: ${url}\nCategory: ${cat || "Not specified"}\n\nWhy it should be included:\n${desc || "(not provided)"}\n\n---\nSubmitted via HeoRlytics R Package Directory`
-  );
+  const body = encodeURIComponent(`Package name: ${name}\nURL: ${url}\nCategory: ${cat||"Not specified"}\n\nWhy it should be included:\n${desc||"(not provided)"}\n\n---\nSubmitted via HeoRlytics R Package Directory`);
   window.location.href = `mailto:shubhram.pandey@heorlytics.com?subject=${subject}&body=${body}`;
   closeModal();
 });
 
-// ======================================================
-//  BACK TO TOP
-// ======================================================
+// ── Back to top
 const btt = document.getElementById("back-to-top");
-window.addEventListener("scroll", () => {
-  btt.classList.toggle("visible", window.scrollY > 400);
-}, { passive: true });
+window.addEventListener("scroll", () => btt.classList.toggle("visible", window.scrollY > 400), { passive: true });
 btt.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
-// ======================================================
-//  INITIAL RENDER
-// ======================================================
+// ── Initial render
 render();
 </script>
 </body>
