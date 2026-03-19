@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HEOR R Package Finder</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text: #0f172a;
+      --text-2: #475569;
+      --text-3: #94a3b8;
+      --accent: #0d9488;
+      --accent-bg: #f0fdfa;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.09);
+
+      /* status colours */
+      --green-bg: #dcfce7; --green-text: #15803d;
+      --amber-bg: #fef3c7; --amber-text: #92400e;
+      --red-bg: #fee2e2;   --red-text: #991b1b;
+      --blue-bg: #dbeafe;  --blue-text: #1d4ed8;
+      --purple-bg: #ede9fe;--purple-text: #6d28d9;
+      --gray-bg: #f1f5f9;  --gray-text: #475569;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ---- HEADER ---- */
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0d9488 100%);
+      color: #fff;
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+    }
+    header .logo {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #94d5cd;
+      margin-bottom: .5rem;
+    }
+    header h1 {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+    header p {
+      font-size: 14px;
+      color: #cbd5e1;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+    .header-stats {
+      display: inline-flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .header-stats .stat {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 8px;
+      padding: .4rem .9rem;
+      font-size: 13px;
+    }
+    .header-stats .stat strong { font-size: 18px; display: block; }
+
+    /* ---- FILTER BAR ---- */
+    .filter-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(246,248,251,.95);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+      padding: .85rem 1.5rem;
+    }
+    .filter-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+    .search-wrap svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+      pointer-events: none;
+    }
+    #search {
+      width: 100%;
+      padding: .55rem .75rem .55rem 2.1rem;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      font-size: 14px;
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    #search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(13,148,136,.12); }
+
+    .filter-pills {
+      display: flex;
+      gap: .4rem;
+      flex-wrap: wrap;
+    }
+    .pill {
+      padding: .38rem .85rem;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text-2);
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .pill:hover { border-color: var(--accent); color: var(--accent); }
+    .pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    #category-select {
+      padding: .5rem .85rem;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      font-size: 13px;
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      max-width: 220px;
+    }
+    #category-select:focus { border-color: var(--accent); }
+
+    /* ---- MAIN ---- */
+    main { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+
+    .results-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    #results-count { font-size: 13px; color: var(--text-2); }
+    .sort-wrap { display: flex; align-items: center; gap: .5rem; font-size: 13px; color: var(--text-2); }
+    #sort-select {
+      padding: .35rem .6rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* ---- PACKAGE GRID ---- */
+    #package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 14px;
+    }
+
+    /* ---- PACKAGE CARD ---- */
+    .pkg-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.2rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      transition: box-shadow .15s, border-color .15s, transform .15s;
+    }
+    .pkg-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+    .pkg-name {
+      font-family: ui-monospace, "Cascadia Code", "Fira Code", monospace;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e40af;
+    }
+    .pkg-name a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .pkg-name a:hover { text-decoration: underline; }
+
+    .badges { display: flex; gap: .3rem; flex-wrap: wrap; flex-shrink: 0; }
+    .badge {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 12px;
+      white-space: nowrap;
+      letter-spacing: .02em;
+    }
+    .b-green   { background: var(--green-bg);  color: var(--green-text); }
+    .b-amber   { background: var(--amber-bg);  color: var(--amber-text); }
+    .b-red     { background: var(--red-bg);    color: var(--red-text); }
+    .b-blue    { background: var(--blue-bg);   color: var(--blue-text); }
+    .b-purple  { background: var(--purple-bg); color: var(--purple-text); }
+    .b-gray    { background: var(--gray-bg);   color: var(--gray-text); }
+
+    .pkg-category {
+      font-size: 11px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      font-weight: 500;
+    }
+    .pkg-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .pkg-fns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem;
+    }
+    .fn-chip {
+      font-family: ui-monospace, "Cascadia Code", monospace;
+      font-size: 11px;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 2px 7px;
+      border-radius: 5px;
+      border: 1px solid #e2e8f0;
+    }
+    .pkg-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: .5rem;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .tier-label { color: var(--text-3); font-style: italic; }
+    .cran-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .cran-link:hover { text-decoration: underline; }
+
+    /* ---- EMPTY STATE ---- */
+    .empty-state {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-3);
+    }
+    .empty-state svg { margin-bottom: 1rem; opacity: .4; }
+    .empty-state h3 { font-size: 16px; color: var(--text-2); margin-bottom: .4rem; }
+    .empty-state p { font-size: 13px; }
+
+    /* ---- SECTION HEADINGS ---- */
+    .section-divider {
+      grid-column: 1/-1;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      padding: .5rem 0 .25rem;
+      border-bottom: 1px solid var(--border);
+      margin-top: .5rem;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 12px;
+      color: var(--text-3);
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+    footer strong { color: var(--text-2); }
+
+    @media (max-width: 600px) {
+      #package-grid { grid-template-columns: 1fr; }
+      .filter-inner { flex-direction: column; }
+      .search-wrap { min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Pharmacoevidence &mdash; HEOR Analytics</div>
+  <h1>HEOR R Package Finder</h1>
+  <p>Browse ~35 existing CRAN packages and 24 proposed packages across 8 Health Economics &amp; Outcomes Research sub-domains. Identify tools for your workflow or gaps worth building.</p>
+  <div class="header-stats">
+    <div class="stat"><strong>35</strong> Existing packages</div>
+    <div class="stat"><strong>24</strong> Proposed packages</div>
+    <div class="stat"><strong>8</strong> HEOR sub-domains</div>
+    <div class="stat"><strong>Mar 2026</strong> Last updated</div>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <div class="filter-inner">
+    <div class="search-wrap">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" id="search" placeholder="Search packages, functions, descriptions…" autocomplete="off" />
+    </div>
+
+    <div class="filter-pills">
+      <button class="pill active" data-status="all">All</button>
+      <button class="pill" data-status="cran">CRAN Available</button>
+      <button class="pill" data-status="proposed">Proposed</button>
+      <button class="pill" data-status="tier1">Tier 1 Priority</button>
+    </div>
+
+    <select id="category-select">
+      <option value="all">All categories</option>
+    </select>
+  </div>
+</div>
+
+<main>
+  <div class="results-bar">
+    <span id="results-count"></span>
+    <div class="sort-wrap">
+      Sort:
+      <select id="sort-select">
+        <option value="default">Default</option>
+        <option value="name">Name A–Z</option>
+        <option value="priority">Priority</option>
+        <option value="category">Category</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="package-grid"></div>
+</main>
+
+<footer>
+  Built by <strong>Pharmacoevidence</strong> &middot; CRAN ecosystem scan March 2026 &middot;
+  <a href="https://cran.r-project.org" target="_blank" rel="noopener" style="color:var(--accent)">CRAN</a> &middot;
+  <a href="https://r-hta.org" target="_blank" rel="noopener" style="color:var(--accent)">R-HTA</a>
+</footer>
+
+<script>
+// ============================================================
+//  PACKAGE DATA
+// ============================================================
+const PACKAGES = [
+  // ---- EXISTING — Cost-effectiveness modelling ----
+  {
+    name: "heemod",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Cost-effectiveness modelling",
+    desc: "Markov state-transition models with PSA, DSA, and heterogeneity. The closest to an all-in-one HE modelling framework on CRAN.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=heemod"
+  },
+  {
+    name: "hesim",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Cost-effectiveness modelling",
+    desc: "Individual-level simulation, partitioned survival models, PSA-ready. Strong for oncology NMA-fed models.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=hesim"
+  },
+  {
+    name: "dampack",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Cost-effectiveness modelling",
+    desc: "Decision-analytic modelling — CEACs, tornado plots, EVPI, EVPPI. Good companion to heemod.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=dampack"
+  },
+  {
+    name: "rdecision",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Cost-effectiveness modelling",
+    desc: "Object-oriented decision trees and semi-Markov models.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=rdecision"
+  },
+  {
+    name: "BCEA",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Cost-effectiveness modelling",
+    desc: "Bayesian cost-effectiveness analysis, net benefit framework, full plotting suite.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=BCEA"
+  },
+  {
+    name: "ICEinfer",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Cost-effectiveness modelling",
+    desc: "Incremental cost-effectiveness inference from two independent samples.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=ICEinfer"
+  },
+
+  // ---- EXISTING — Survival analysis ----
+  {
+    name: "survHE",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Survival analysis for HTA",
+    desc: "Survival analysis for HE evaluation — parametric and Bayesian; NICE DSU TSD 14 aligned.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=survHE"
+  },
+  {
+    name: "flexsurv",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Survival analysis for HTA",
+    desc: "Flexible parametric survival models including Royston-Parmar splines and generalised gamma.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=flexsurv"
+  },
+  {
+    name: "survminer",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Survival analysis for HTA",
+    desc: "Publication-ready Kaplan-Meier plots; widely used in HEOR dossier submissions.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=survminer"
+  },
+  {
+    name: "DigitizeR",
+    status: "limited",
+    statusLabel: "Limited",
+    category: "Survival analysis for HTA",
+    desc: "KM curve digitization from published images. Widely needed but limited automation and maintenance.",
+    fns: [],
+    tier: null,
+    cranUrl: null
+  },
+
+  // ---- EXISTING — NMA & indirect comparison ----
+  {
+    name: "netmeta",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "NMA & indirect comparison",
+    desc: "Frequentist NMA — most downloaded NMA package. SUCRA, P-score, forest plots, league tables.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=netmeta"
+  },
+  {
+    name: "gemtc",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "NMA & indirect comparison",
+    desc: "Bayesian NMA via MCMC (JAGS/OpenBUGS). GeMTC interface for network meta-analysis.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=gemtc"
+  },
+  {
+    name: "pcnetmeta",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "NMA & indirect comparison",
+    desc: "Patient-centred NMA with arm-based models using a Bayesian approach.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=pcnetmeta"
+  },
+  {
+    name: "multinma",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "NMA & indirect comparison",
+    desc: "Multi-level NMA with IPD and aggregate data. Newer package gaining traction in HTA submissions.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=multinma"
+  },
+
+  // ---- EXISTING — Quality of life ----
+  {
+    name: "eq5d",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Quality of life & utility",
+    desc: "EQ-5D-3L/5L/Y index calculation, all major country value sets, DSU mappings, crosswalk. Includes Shiny app.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=eq5d"
+  },
+  {
+    name: "PROscorer",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Quality of life & utility",
+    desc: "Scoring algorithms for patient-reported outcome instruments including SF-36 and PROMIS.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=PROscorer"
+  },
+  {
+    name: "QoLR",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Quality of life & utility",
+    desc: "QoL analysis in oncology trials — time to deterioration and responder analyses.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=QoLR"
+  },
+
+  // ---- EXISTING — Treatment switching ----
+  {
+    name: "trtswitch",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Treatment switching",
+    desc: "RPSFTM, IPE, IPCW, MSM, and TSE methods for treatment switching adjustment. Very new (2024–25).",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=trtswitch"
+  },
+  {
+    name: "rpsftm",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Treatment switching",
+    desc: "Rank-preserving structural failure time model for treatment switching adjustment.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=rpsftm"
+  },
+
+  // ---- EXISTING — Population adjustment ----
+  {
+    name: "maic",
+    status: "partial",
+    statusLabel: "Partial",
+    category: "Population adjustment (MAIC/STC)",
+    desc: "Matching-adjusted indirect comparison. Basic functionality; limited diagnostics and no ESS output.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=maic"
+  },
+
+  // ---- EXISTING — Value of information ----
+  {
+    name: "voi",
+    status: "cran",
+    statusLabel: "CRAN",
+    category: "Value of information",
+    desc: "Value of information analysis — EVPI and EVPPI calculations for decision models.",
+    fns: [],
+    tier: null,
+    cranUrl: "https://cran.r-project.org/package=voi"
+  },
+
+  // ---- EXISTING — Utility mapping ----
+  {
+    name: "mappe",
+    status: "partial",
+    statusLabel: "Partial",
+    category: "Utility mapping",
+    desc: "Utility mapping using Hernández-Alava SMM and CLAD models. Limited documentation and examples.",
+    fns: [],
+    tier: null,
+    cranUrl: null
+  },
+  {
+    name: "tobit",
+    status: "generic",
+    statusLabel: "Generic",
+    category: "Utility mapping",
+    desc: "Tobit regression — used in utility mapping workflows but not HEOR-specific.",
+    fns: [],
+    tier: null,
+    cranUrl: null
+  },
+
+  // ============================================================
+  //  PROPOSED PACKAGES
+  // ============================================================
+
+  // ---- Budget impact & market access ----
+  {
+    name: "htaBIM",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Budget impact & market access",
+    desc: "ISPOR-compliant cohort-based BIM framework with market share dynamics, incident/prevalent population engines, multi-payer scenario analysis, annualised cost outputs, and Shiny interface.",
+    fns: ["bim_model()", "market_share()", "payer_perspective()", "bim_report()"],
+    tier: "tier1",
+    tierLabel: "Tier 1 — Critical",
+    cranUrl: null
+  },
+  {
+    name: "htaMarketAccess",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Budget impact & market access",
+    desc: "Models net price scenarios, rebate tiers, formulary positioning decisions, patient share forecasting, and managed entry agreement (MEA) structures.",
+    fns: ["net_price()", "rebate_scenario()", "mea_model()", "formulary_sim()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+
+  // ---- Population-adjusted indirect comparison ----
+  {
+    name: "nicePAIC",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Population adjustment (MAIC/STC)",
+    desc: "Full MAIC (entropy balancing, propensity MAIC) and STC framework. Bootstrap CIs, ESS diagnostics, covariate balance plots, GRADE-like uncertainty assessment. NICE DSU TSD 18 aligned.",
+    fns: ["maic_fit()", "stc_fit()", "ess_diagnostic()", "balance_plot()", "paic_report()"],
+    tier: "tier1",
+    tierLabel: "Tier 1 — Critical",
+    cranUrl: null
+  },
+  {
+    name: "ipdfromKM",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Survival analysis for HTA",
+    desc: "Implements the Guyot (2012) algorithm for IPD reconstruction from published KM curves — multi-arm support, risk-table integration, digitization API, uncertainty propagation, and NICE-ready outputs.",
+    fns: ["digitize_km()", "reconstruct_ipd()", "km_uncertainty()", "ipd_export()"],
+    tier: "tier1",
+    tierLabel: "Tier 1 — Critical",
+    cranUrl: null
+  },
+
+  // ---- Utility mapping & QoL ----
+  {
+    name: "utilityMapper",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Utility mapping",
+    desc: "Maps EORTC QLQ-C30, FACT-G, HAQ-DI, DLQI, and custom PRO scales to EQ-5D/SF-6D. Implements SMM, CLAD, OLS, Tobit with NICE DSU TSD 10 model selection and uncertainty propagation.",
+    fns: ["map_utility()", "smm_fit()", "clad_fit()", "model_selection_guidance()"],
+    tier: "tier1",
+    tierLabel: "Tier 1 — Critical",
+    cranUrl: null
+  },
+  {
+    name: "htaQoL",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Quality of life & utility",
+    desc: "MCID/MID estimation methods, responder analysis, time-to-deterioration models, longitudinal HRQoL trajectories, and automated HTA-style table generation for PRO endpoints.",
+    fns: ["mcid_estimate()", "responder_analysis()", "ttd_model()", "qol_trajectory()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+
+  // ---- Real-world evidence ----
+  {
+    name: "htaRWE",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Real-world evidence",
+    desc: "ICD-9/10 code grouping, comorbidity scoring (Charlson, Elixhauser), treatment episode construction, IPTW/matching for comparative effectiveness, standardised diagnostics aligned with ISPOR/HTAi RWE frameworks.",
+    fns: ["icd_group()", "comorbidity_score()", "treatment_episode()", "iptw_hta()"],
+    tier: "tier2",
+    tierLabel: "Tier 2 — High",
+    cranUrl: null
+  },
+  {
+    name: "rweValidator",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Real-world evidence",
+    desc: "Automated checks aligned to NICE Evidence Standards Framework, ISPOR RWE Transparency Checklist, and FDA 2023 RWE guidance. Generates structured bias assessment tables for dossier inclusion.",
+    fns: ["esf_assess()", "bias_table()", "rwe_checklist()", "transparency_score()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+
+  // ---- HTA-body specific tools ----
+  {
+    name: "niceHTA",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "HTA-body specific tools",
+    desc: "Company submission templates (Sections B/C/D), automated cross-checking against NICE Methods Guide 2022, ERG-style sensitivity analysis tables, ACD response structure, and audit trail generation.",
+    fns: ["nice_section_b()", "nice_section_c()", "methods_check()", "acd_response()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+  {
+    name: "euHTA",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "HTA-body specific tools",
+    desc: "JCA PICO framing tools, REA (relative effectiveness assessment) templates, cross-country value set harmonisation, country-specific economic adaptation, and EU HTA Regulation Article 13/14 checklists.",
+    fns: ["jca_pico()", "rea_template()", "country_adapt()", "jca_checklist()"],
+    tier: "tier2",
+    tierLabel: "Tier 2 — High",
+    cranUrl: null
+  },
+  {
+    name: "cadthHTA",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "HTA-body specific tools",
+    desc: "CADTH pharmacoeconomic guidelines (2021) alignment, provincial payer perspective tools, Canadian unit costs integration, CDR/RCERC submission templates, and pCPA negotiation scenario modelling.",
+    fns: ["cadth_perspective()", "provincial_costs()", "cdr_template()", "pcpa_scenario()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+  {
+    name: "htaMCDA",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "HTA-body specific tools",
+    desc: "EVIDEM framework implementation, swing-weighting elicitation, DIRECT/SWING weight estimation, value tree construction, MCDA sensitivity analysis, and rare disease benefit-risk assessment.",
+    fns: ["value_tree()", "swing_weights()", "mcda_model()", "mcda_sensitivity()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+
+  // ---- Modelling methodology ----
+  {
+    name: "treatWaning",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Modelling methodology",
+    desc: "Piecewise, exponential, and Weibull waning functions for treatment benefit, NICE ERG-style waning sensitivity analyses, Bayesian waning parameter estimation, and structured uncertainty reporting.",
+    fns: ["waning_model()", "waning_psa()", "waning_scenario()", "waning_report()"],
+    tier: "tier2",
+    tierLabel: "Tier 2 — High",
+    cranUrl: null
+  },
+  {
+    name: "rareDiseaseHTA",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Modelling methodology",
+    desc: "Bayesian borrowing from registry/natural history data, two-dimensional banding Markov structures (e.g. IgAN UP/C, MG MG-ADL banding), small-sample extrapolation methods, NICE HST template alignment.",
+    fns: ["bayesian_borrow()", "banding_markov()", "small_sample_extrap()", "hst_template()"],
+    tier: "tier2",
+    tierLabel: "Tier 2 — High",
+    cranUrl: null
+  },
+  {
+    name: "adamHEOR",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Modelling methodology",
+    desc: "Standardised pipeline from CDISC ADaM datasets (ADTTE, ADRS, ADCM, ADLB, ADEX) to model-ready HEOR parameters. Automates transition probability calculation, response-based utility assignment, and resource use extraction.",
+    fns: ["adtte_to_transitions()", "adrs_to_utilities()", "adcm_to_costs()", "adam_model_prep()"],
+    tier: "tier1",
+    tierLabel: "Tier 1 — High",
+    cranUrl: null
+  },
+  {
+    name: "partSurvHTA",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Modelling methodology",
+    desc: "Standardised PartSA framework for oncology: OS/PFS state partitioning, multi-extrapolation scenario matrix, NMA-fed parametric inputs, automated QALY/cost calculations, and structured comparison tables.",
+    fns: ["partsa_model()", "extrap_scenario()", "nma_to_surv()", "partsa_report()"],
+    tier: "tier2",
+    tierLabel: "Tier 2 — High",
+    cranUrl: null
+  },
+
+  // ---- Evidence synthesis & SLR ----
+  {
+    name: "htaSLR",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Evidence synthesis & SLR",
+    desc: "PRISMA 2020 flow diagram generation, structured data extraction templates, GRADE evidence tables, NMA feasibility assessment, and HTA evidence gap mapping — all in reproducible R workflows.",
+    fns: ["prisma_flow()", "extraction_template()", "grade_table()", "evidence_gap_map()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+  {
+    name: "nmaViz",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "NMA & indirect comparison",
+    desc: "Network geometry plots, league tables with CIs, SUCRA/P-score heatmaps, contribution matrices, GRADE NMA certainty tables, and publication-ready figures for HTA dossiers.",
+    fns: ["network_plot()", "league_table()", "grade_nma()", "contribution_heatmap()"],
+    tier: "tier2",
+    tierLabel: "Tier 2 — High",
+    cranUrl: null
+  },
+
+  // ---- Reporting & automation ----
+  {
+    name: "htaReport",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Reporting & automation",
+    desc: "Quarto/R Markdown templates for NICE, CADTH, and EU-HTA submissions. Auto-generates Section C economic reports, sensitivity analysis tables, PSA outputs, and submission-ready Word/PDF documents.",
+    fns: ["hta_template()", "render_submission()", "model_audit_trail()", "version_track()"],
+    tier: "tier2",
+    tierLabel: "Tier 2 — High",
+    cranUrl: null
+  },
+  {
+    name: "htaValidate",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Reporting & automation",
+    desc: "Unit testing framework for HE models, cross-validation against Excel reference models, face validity automated checks, ISPOR-AMCP model transparency checklist, and structured validation documentation.",
+    fns: ["model_unit_test()", "excel_crossval()", "face_validity()", "transparency_report()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+
+  // ---- Payer & pricing analytics ----
+  {
+    name: "htaThreshold",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Payer & pricing analytics",
+    desc: "Optimal price derivation from ICER thresholds, multi-country WTP landscapes, ICER sensitivity to price, value-based pricing under different payer WTP assumptions, and MEA break-even analysis.",
+    fns: ["optimal_price()", "wtp_landscape()", "vbp_model()", "mea_breakeven()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+  {
+    name: "biosimHTA",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Payer & pricing analytics",
+    desc: "Biosimilar market share erosion curves (logistic, linear, step), price erosion scenarios, international reference pricing impact, automatic indication-level BIM, and payer savings quantification.",
+    fns: ["biosim_share()", "price_erosion()", "irp_impact()", "biosim_bim()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  },
+
+  // ---- Advanced analytics ----
+  {
+    name: "htaVOI",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Value of information",
+    desc: "EVPI, EVPPI (GAM, moment-matching), EVSI with strong prior methods, ENBS for research design decisions, and structured VOI reporting aligned to NICE DSU TSD 7 and TSD 36.",
+    fns: ["evpi()", "evppi_gam()", "evsi()", "enbs()", "voi_report()"],
+    tier: "tier2",
+    tierLabel: "Tier 2 — High",
+    cranUrl: null
+  },
+  {
+    name: "htaCalibrateML",
+    status: "proposed",
+    statusLabel: "Proposed",
+    category: "Modelling methodology",
+    desc: "Neural network metamodelling (BayCANN), Gaussian process emulation for computationally intensive HE models, history matching, and structured calibration reporting for HTA submission validation.",
+    fns: ["baycann_calibrate()", "gp_emulate()", "history_match()", "calibration_report()"],
+    tier: "tier3",
+    tierLabel: "Tier 3 — Moderate",
+    cranUrl: null
+  }
+];
+
+// ============================================================
+//  BADGE CONFIG
+// ============================================================
+const STATUS_BADGE = {
+  cran:     { cls: "b-green",  label: "CRAN" },
+  limited:  { cls: "b-amber",  label: "Limited" },
+  partial:  { cls: "b-amber",  label: "Partial" },
+  generic:  { cls: "b-gray",   label: "Generic" },
+  proposed: { cls: "b-purple", label: "Proposed" }
+};
+
+const TIER_BADGE = {
+  tier1: { cls: "b-red",   label: "Tier 1" },
+  tier2: { cls: "b-blue",  label: "Tier 2" },
+  tier3: { cls: "b-amber", label: "Tier 3" }
+};
+
+// ============================================================
+//  STATE
+// ============================================================
+let activeStatus = "all";
+let activeCategory = "all";
+let searchQuery = "";
+let sortMode = "default";
+
+// ============================================================
+//  INITIALISE
+// ============================================================
+const categories = [...new Set(PACKAGES.map(p => p.category))].sort();
+const categorySelect = document.getElementById("category-select");
+categories.forEach(cat => {
+  const opt = document.createElement("option");
+  opt.value = cat;
+  opt.textContent = cat;
+  categorySelect.appendChild(opt);
+});
+
+categorySelect.addEventListener("change", e => {
+  activeCategory = e.target.value;
+  render();
+});
+
+document.querySelectorAll(".pill[data-status]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".pill[data-status]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeStatus = btn.dataset.status;
+    render();
+  });
+});
+
+document.getElementById("search").addEventListener("input", e => {
+  searchQuery = e.target.value.toLowerCase().trim();
+  render();
+});
+
+document.getElementById("sort-select").addEventListener("change", e => {
+  sortMode = e.target.value;
+  render();
+});
+
+// ============================================================
+//  FILTER + SORT
+// ============================================================
+function filterPackages() {
+  return PACKAGES.filter(pkg => {
+    // status filter
+    if (activeStatus === "cran" && pkg.status !== "cran") return false;
+    if (activeStatus === "proposed" && pkg.status !== "proposed") return false;
+    if (activeStatus === "tier1" && pkg.tier !== "tier1") return false;
+
+    // category filter
+    if (activeCategory !== "all" && pkg.category !== activeCategory) return false;
+
+    // search
+    if (searchQuery) {
+      const haystack = [pkg.name, pkg.category, pkg.desc, ...(pkg.fns || [])].join(" ").toLowerCase();
+      if (!haystack.includes(searchQuery)) return false;
+    }
+
+    return true;
+  });
+}
+
+function sortPackages(pkgs) {
+  if (sortMode === "name")     return [...pkgs].sort((a,b) => a.name.localeCompare(b.name));
+  if (sortMode === "category") return [...pkgs].sort((a,b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
+  if (sortMode === "priority") {
+    const order = { tier1: 0, tier2: 1, tier3: 2, null: 3 };
+    return [...pkgs].sort((a,b) => (order[a.tier] ?? 3) - (order[b.tier] ?? 3) || a.name.localeCompare(b.name));
+  }
+  return pkgs; // default: original order
+}
+
+// ============================================================
+//  RENDER
+// ============================================================
+function render() {
+  const filtered = sortPackages(filterPackages());
+  const grid = document.getElementById("package-grid");
+  const countEl = document.getElementById("results-count");
+
+  countEl.textContent = `Showing ${filtered.length} of ${PACKAGES.length} packages`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <h3>No packages found</h3>
+        <p>Try different search terms or clear your filters.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(pkg => renderCard(pkg)).join("");
+}
+
+function renderCard(pkg) {
+  const sb = STATUS_BADGE[pkg.status] || STATUS_BADGE.cran;
+  const tb = pkg.tier ? TIER_BADGE[pkg.tier] : null;
+
+  const nameHtml = pkg.cranUrl
+    ? `<a href="${pkg.cranUrl}" target="_blank" rel="noopener">${pkg.name}</a>`
+    : pkg.name;
+
+  const fnsHtml = pkg.fns && pkg.fns.length
+    ? `<div class="pkg-fns">${pkg.fns.map(f => `<span class="fn-chip">${f}</span>`).join("")}</div>`
+    : "";
+
+  const footerRight = pkg.cranUrl
+    ? `<a class="cran-link" href="${pkg.cranUrl}" target="_blank" rel="noopener">
+         <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+           <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+           <polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/>
+         </svg>
+         CRAN
+       </a>`
+    : `<span class="tier-label">${pkg.tierLabel || "Proposed"}</span>`;
+
+  return `
+    <div class="pkg-card">
+      <div class="card-top">
+        <span class="pkg-name">${nameHtml}</span>
+        <div class="badges">
+          <span class="badge ${sb.cls}">${sb.label}</span>
+          ${tb ? `<span class="badge ${tb.cls}">${tb.label}</span>` : ""}
+        </div>
+      </div>
+      <div class="pkg-category">${pkg.category}</div>
+      <div class="pkg-desc">${pkg.desc}</div>
+      ${fnsHtml}
+      <div class="pkg-footer">
+        <span style="font-size:11px;color:var(--text-3)">${pkg.status === "proposed" ? "Not yet on CRAN" : pkg.status === "cran" ? "Available on CRAN" : pkg.statusLabel}</span>
+        ${footerRight}
+      </div>
+    </div>`;
+}
+
+// initial render
+render();
+</script>
+</body>
+</html>
