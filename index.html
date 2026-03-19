@@ -3,106 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HEOR R Package Finder</title>
+  <title>HEOR R Package Directory</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f6f8fb;
+      --bg: #f0f4f8;
       --surface: #ffffff;
+      --surface-2: #f8fafc;
       --border: #e2e8f0;
-      --border-strong: #cbd5e1;
+      --border-2: #cbd5e1;
       --text: #0f172a;
       --text-2: #475569;
       --text-3: #94a3b8;
       --accent: #0d9488;
-      --accent-bg: #f0fdfa;
+      --accent-dark: #0f766e;
+      --radius-sm: 6px;
       --radius: 10px;
-      --shadow: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
-      --shadow-md: 0 4px 12px rgba(0,0,0,.09);
-
-      /* status colours */
-      --green-bg: #dcfce7; --green-text: #15803d;
-      --amber-bg: #fef3c7; --amber-text: #92400e;
-      --red-bg: #fee2e2;   --red-text: #991b1b;
-      --blue-bg: #dbeafe;  --blue-text: #1d4ed8;
-      --purple-bg: #ede9fe;--purple-text: #6d28d9;
-      --gray-bg: #f1f5f9;  --gray-text: #475569;
+      --radius-lg: 14px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.09);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
       min-height: 100vh;
     }
 
-    /* ---- HEADER ---- */
+    /* ========== HEADER ========== */
     header {
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0d9488 100%);
+      background: linear-gradient(135deg, #0c1a2e 0%, #0f2744 50%, #0d4f45 100%);
+      padding: 2.75rem 2rem 2rem;
       color: #fff;
-      padding: 2.5rem 1.5rem 2rem;
-      text-align: center;
     }
-    header .logo {
+    .header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    .header-eyebrow {
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: .12em;
+      letter-spacing: .14em;
       text-transform: uppercase;
-      color: #94d5cd;
-      margin-bottom: .5rem;
+      color: #5eead4;
+      margin-bottom: .6rem;
     }
     header h1 {
-      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
       font-weight: 700;
+      letter-spacing: -.02em;
       margin-bottom: .5rem;
     }
     header p {
       font-size: 14px;
-      color: #cbd5e1;
-      max-width: 600px;
-      margin: 0 auto 1.5rem;
+      color: #94a3b8;
+      max-width: 620px;
+      margin-bottom: 2rem;
+      line-height: 1.7;
     }
     .header-stats {
-      display: inline-flex;
-      gap: 1.5rem;
+      display: flex;
+      gap: 1rem;
       flex-wrap: wrap;
-      justify-content: center;
     }
-    .header-stats .stat {
-      background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: 8px;
-      padding: .4rem .9rem;
-      font-size: 13px;
+    .h-stat {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding: .6rem 1.1rem;
+      min-width: 100px;
     }
-    .header-stats .stat strong { font-size: 18px; display: block; }
+    .h-stat-num {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #5eead4;
+      line-height: 1.1;
+    }
+    .h-stat-label {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
 
-    /* ---- FILTER BAR ---- */
+    /* ========== FILTER BAR ========== */
     .filter-bar {
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: rgba(246,248,251,.95);
-      backdrop-filter: blur(6px);
+      z-index: 50;
+      background: rgba(240,244,248,.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
-      padding: .85rem 1.5rem;
+      padding: .75rem 2rem;
     }
     .filter-inner {
-      max-width: 1200px;
+      max-width: 1240px;
       margin: 0 auto;
       display: flex;
-      gap: .75rem;
+      gap: .6rem;
       flex-wrap: wrap;
       align-items: center;
     }
     .search-wrap {
       position: relative;
       flex: 1;
-      min-width: 220px;
+      min-width: 200px;
+      max-width: 360px;
     }
-    .search-wrap svg {
+    .search-icon {
       position: absolute;
       left: 10px;
       top: 50%;
@@ -112,867 +124,848 @@
     }
     #search {
       width: 100%;
-      padding: .55rem .75rem .55rem 2.1rem;
-      border: 1px solid var(--border-strong);
-      border-radius: 8px;
-      font-size: 14px;
+      padding: .52rem .75rem .52rem 2.1rem;
+      border: 1px solid var(--border-2);
+      border-radius: var(--radius);
+      font-size: 13.5px;
       background: var(--surface);
       color: var(--text);
       outline: none;
       transition: border-color .15s, box-shadow .15s;
     }
-    #search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(13,148,136,.12); }
-
-    .filter-pills {
-      display: flex;
-      gap: .4rem;
-      flex-wrap: wrap;
+    #search:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(13,148,136,.15);
     }
+    #search::placeholder { color: var(--text-3); }
+
+    .pill-group { display: flex; gap: .35rem; flex-wrap: wrap; }
     .pill {
-      padding: .38rem .85rem;
+      padding: .38rem .8rem;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 500;
       cursor: pointer;
-      border: 1px solid var(--border-strong);
+      border: 1px solid var(--border-2);
       background: var(--surface);
       color: var(--text-2);
       transition: all .15s;
       white-space: nowrap;
+      user-select: none;
     }
     .pill:hover { border-color: var(--accent); color: var(--accent); }
     .pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    #category-select {
-      padding: .5rem .85rem;
-      border: 1px solid var(--border-strong);
-      border-radius: 8px;
+    select.filter-select {
+      padding: .45rem .8rem;
+      border: 1px solid var(--border-2);
+      border-radius: var(--radius);
       font-size: 13px;
       background: var(--surface);
       color: var(--text);
       cursor: pointer;
       outline: none;
-      max-width: 220px;
+      transition: border-color .15s;
     }
-    #category-select:focus { border-color: var(--accent); }
+    select.filter-select:focus { border-color: var(--accent); }
 
-    /* ---- MAIN ---- */
-    main { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+    .filter-sep {
+      width: 1px;
+      height: 28px;
+      background: var(--border-2);
+      align-self: center;
+    }
 
-    .results-bar {
+    /* ========== MAIN ========== */
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 3rem;
+    }
+
+    .results-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1rem;
+      margin-bottom: 1.1rem;
       flex-wrap: wrap;
       gap: .5rem;
     }
     #results-count { font-size: 13px; color: var(--text-2); }
-    .sort-wrap { display: flex; align-items: center; gap: .5rem; font-size: 13px; color: var(--text-2); }
-    #sort-select {
-      padding: .35rem .6rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 12px;
-      background: var(--surface);
-      color: var(--text);
-      cursor: pointer;
-    }
+    .sort-wrap { display: flex; align-items: center; gap: .4rem; font-size: 13px; color: var(--text-2); }
 
-    /* ---- PACKAGE GRID ---- */
+    /* ========== GRID ========== */
     #package-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
       gap: 14px;
     }
 
-    /* ---- PACKAGE CARD ---- */
+    /* ========== CARD ========== */
     .pkg-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.1rem 1.2rem;
+      border-radius: var(--radius-lg);
+      padding: 1.15rem 1.25rem 1rem;
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
-      gap: .6rem;
-      transition: box-shadow .15s, border-color .15s, transform .15s;
+      gap: 0;
+      transition: box-shadow .18s, border-color .18s, transform .18s;
+      position: relative;
+      overflow: hidden;
+    }
+    .pkg-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, #e2e8f0);
     }
     .pkg-card:hover {
       box-shadow: var(--shadow-md);
-      border-color: var(--accent);
-      transform: translateY(-1px);
+      border-color: var(--border-2);
+      transform: translateY(-2px);
     }
 
-    .card-top {
+    /* accent colours per category */
+    .cat-cem  { --card-accent: #6366f1; }
+    .cat-surv { --card-accent: #0d9488; }
+    .cat-nma  { --card-accent: #3b82f6; }
+    .cat-qol  { --card-accent: #f59e0b; }
+    .cat-ts   { --card-accent: #ec4899; }
+    .cat-pa   { --card-accent: #8b5cf6; }
+    .cat-voi  { --card-accent: #ef4444; }
+    .cat-rwe  { --card-accent: #10b981; }
+    .cat-stat { --card-accent: #64748b; }
+
+    .card-head {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       gap: .5rem;
+      margin-bottom: .6rem;
     }
     .pkg-name {
-      font-family: ui-monospace, "Cascadia Code", "Fira Code", monospace;
-      font-size: 15px;
-      font-weight: 600;
+      font-family: ui-monospace, "Cascadia Code", "SF Mono", "Fira Code", monospace;
+      font-size: 15.5px;
+      font-weight: 700;
       color: #1e40af;
+      letter-spacing: -.01em;
     }
-    .pkg-name a {
-      color: inherit;
-      text-decoration: none;
-    }
+    .pkg-name a { color: inherit; text-decoration: none; }
     .pkg-name a:hover { text-decoration: underline; }
 
-    .badges { display: flex; gap: .3rem; flex-wrap: wrap; flex-shrink: 0; }
+    .badge-row { display: flex; gap: .3rem; flex-shrink: 0; flex-wrap: wrap; }
     .badge {
-      display: inline-block;
       font-size: 10.5px;
       font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 12px;
+      padding: 2.5px 7px;
+      border-radius: 10px;
       white-space: nowrap;
       letter-spacing: .02em;
     }
-    .b-green   { background: var(--green-bg);  color: var(--green-text); }
-    .b-amber   { background: var(--amber-bg);  color: var(--amber-text); }
-    .b-red     { background: var(--red-bg);    color: var(--red-text); }
-    .b-blue    { background: var(--blue-bg);   color: var(--blue-text); }
-    .b-purple  { background: var(--purple-bg); color: var(--purple-text); }
-    .b-gray    { background: var(--gray-bg);   color: var(--gray-text); }
+    .b-cran    { background: #dcfce7; color: #15803d; }
+    .b-github  { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .b-version { background: #eff6ff; color: #1d4ed8; }
 
     .pkg-category {
-      font-size: 11px;
+      font-size: 10.5px;
+      font-weight: 600;
       color: var(--text-3);
       text-transform: uppercase;
-      letter-spacing: .07em;
-      font-weight: 500;
+      letter-spacing: .08em;
+      margin-bottom: .55rem;
     }
+
     .pkg-desc {
       font-size: 13px;
       color: var(--text-2);
-      line-height: 1.6;
+      line-height: 1.65;
+      margin-bottom: .8rem;
       flex: 1;
     }
-    .pkg-fns {
+
+    .pkg-meta {
       display: flex;
+      gap: 1rem;
       flex-wrap: wrap;
-      gap: .35rem;
+      margin-bottom: .85rem;
+      padding: .65rem .75rem;
+      background: var(--surface-2);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
     }
-    .fn-chip {
-      font-family: ui-monospace, "Cascadia Code", monospace;
-      font-size: 11px;
-      background: #f1f5f9;
-      color: #475569;
-      padding: 2px 7px;
-      border-radius: 5px;
-      border: 1px solid #e2e8f0;
-    }
-    .pkg-footer {
+    .meta-item { display: flex; flex-direction: column; gap: 1px; }
+    .meta-label { font-size: 10px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .07em; }
+    .meta-value { font-size: 12.5px; color: var(--text); font-weight: 500; }
+
+    /* download bar */
+    .dl-section { margin-bottom: .85rem; }
+    .dl-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: .5rem;
-      border-top: 1px solid var(--border);
-      font-size: 12px;
+      margin-bottom: 3px;
     }
-    .tier-label { color: var(--text-3); font-style: italic; }
-    .cran-link {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .cran-link:hover { text-decoration: underline; }
+    .dl-label { font-size: 10.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: .07em; font-weight: 600; }
+    .dl-num { font-size: 12px; font-weight: 600; color: var(--text); }
+    .dl-bar-bg { height: 5px; background: #f1f5f9; border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+    .dl-bar-fill { height: 100%; border-radius: 3px; background: var(--card-accent, var(--accent)); transition: width .4s ease; }
+    .dl-monthly-row { display: flex; align-items: center; gap: .5rem; }
+    .dl-monthly-num { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1; }
+    .dl-monthly-label { font-size: 11px; color: var(--text-3); }
 
-    /* ---- EMPTY STATE ---- */
+    /* card footer */
+    .card-footer {
+      display: flex;
+      gap: .5rem;
+      padding-top: .75rem;
+      border-top: 1px solid var(--border);
+    }
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: .35rem .75rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: all .15s;
+      border: 1px solid transparent;
+    }
+    .link-btn-cran {
+      background: #f0fdf4;
+      color: #15803d;
+      border-color: #bbf7d0;
+    }
+    .link-btn-cran:hover { background: #dcfce7; }
+    .link-btn-github {
+      background: #f8fafc;
+      color: #374151;
+      border-color: #d1d5db;
+    }
+    .link-btn-github:hover { background: #f1f5f9; }
+    .link-btn-install {
+      margin-left: auto;
+      background: transparent;
+      color: var(--text-3);
+      border-color: var(--border);
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+    }
+    .link-btn-install:hover { color: var(--text-2); border-color: var(--border-2); }
+
+    /* ========== EMPTY STATE ========== */
     .empty-state {
       grid-column: 1/-1;
       text-align: center;
       padding: 4rem 1rem;
       color: var(--text-3);
     }
-    .empty-state svg { margin-bottom: 1rem; opacity: .4; }
     .empty-state h3 { font-size: 16px; color: var(--text-2); margin-bottom: .4rem; }
     .empty-state p { font-size: 13px; }
 
-    /* ---- SECTION HEADINGS ---- */
-    .section-divider {
-      grid-column: 1/-1;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      padding: .5rem 0 .25rem;
-      border-bottom: 1px solid var(--border);
-      margin-top: .5rem;
+    /* ========== LEGEND ========== */
+    .legend {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 2rem .5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--text-2);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
 
-    /* ---- FOOTER ---- */
+    /* ========== FOOTER ========== */
     footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
       text-align: center;
-      padding: 2rem 1rem;
       font-size: 12px;
       color: var(--text-3);
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
     }
-    footer strong { color: var(--text-2); }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
 
-    @media (max-width: 600px) {
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 640px) {
+      header { padding: 1.75rem 1rem 1.5rem; }
+      .filter-bar, main, footer { padding-left: 1rem; padding-right: 1rem; }
       #package-grid { grid-template-columns: 1fr; }
-      .filter-inner { flex-direction: column; }
-      .search-wrap { min-width: unset; }
+      .filter-inner { flex-direction: column; align-items: stretch; }
+      .search-wrap { max-width: unset; }
+      .filter-sep { display: none; }
     }
   </style>
 </head>
 <body>
 
+<!-- ========== HEADER ========== -->
 <header>
-  <div class="logo">Pharmacoevidence &mdash; HEOR Analytics</div>
-  <h1>HEOR R Package Finder</h1>
-  <p>Browse ~35 existing CRAN packages and 24 proposed packages across 8 Health Economics &amp; Outcomes Research sub-domains. Identify tools for your workflow or gaps worth building.</p>
-  <div class="header-stats">
-    <div class="stat"><strong>35</strong> Existing packages</div>
-    <div class="stat"><strong>24</strong> Proposed packages</div>
-    <div class="stat"><strong>8</strong> HEOR sub-domains</div>
-    <div class="stat"><strong>Mar 2026</strong> Last updated</div>
+  <div class="header-inner">
+    <div class="header-eyebrow">Pharmacoevidence &middot; Open-source toolkit</div>
+    <h1>HEOR R Package Directory</h1>
+    <p>A curated, searchable directory of R packages for Health Economics &amp; Outcomes Research — covering cost-effectiveness modelling, survival analysis, network meta-analysis, quality of life, and more. All packages are publicly available on CRAN or GitHub.</p>
+    <div class="header-stats">
+      <div class="h-stat">
+        <div class="h-stat-num" id="stat-total">27</div>
+        <div class="h-stat-label">Packages listed</div>
+      </div>
+      <div class="h-stat">
+        <div class="h-stat-num">9</div>
+        <div class="h-stat-label">HEOR sub-domains</div>
+      </div>
+      <div class="h-stat">
+        <div class="h-stat-num">Mar 2026</div>
+        <div class="h-stat-label">Last updated</div>
+      </div>
+    </div>
   </div>
 </header>
 
+<!-- ========== FILTER BAR ========== -->
 <div class="filter-bar">
   <div class="filter-inner">
     <div class="search-wrap">
-      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <svg class="search-icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input type="search" id="search" placeholder="Search packages, functions, descriptions…" autocomplete="off" />
+      <input type="search" id="search" placeholder="Search packages, authors, functions…" autocomplete="off" />
     </div>
 
-    <div class="filter-pills">
-      <button class="pill active" data-status="all">All</button>
-      <button class="pill" data-status="cran">CRAN Available</button>
-      <button class="pill" data-status="proposed">Proposed</button>
-      <button class="pill" data-status="tier1">Tier 1 Priority</button>
+    <div class="filter-sep"></div>
+
+    <div class="pill-group" id="cat-pills">
+      <button class="pill active" data-cat="all">All categories</button>
     </div>
 
-    <select id="category-select">
-      <option value="all">All categories</option>
+    <div class="filter-sep"></div>
+
+    <div class="pill-group">
+      <button class="pill active" data-avail="all">All</button>
+      <button class="pill" data-avail="cran">CRAN only</button>
+      <button class="pill" data-avail="github">Has GitHub</button>
+    </div>
+
+    <select class="filter-select" id="sort-select">
+      <option value="downloads_total">Sort: Most downloaded</option>
+      <option value="downloads_monthly">Sort: Monthly downloads</option>
+      <option value="name">Sort: Name A–Z</option>
+      <option value="date">Sort: Recently updated</option>
+      <option value="category">Sort: Category</option>
     </select>
   </div>
 </div>
 
-<main>
-  <div class="results-bar">
-    <span id="results-count"></span>
-    <div class="sort-wrap">
-      Sort:
-      <select id="sort-select">
-        <option value="default">Default</option>
-        <option value="name">Name A–Z</option>
-        <option value="priority">Priority</option>
-        <option value="category">Category</option>
-      </select>
-    </div>
-  </div>
+<!-- ========== LEGEND ========== -->
+<div class="legend" id="legend"></div>
 
+<!-- ========== MAIN ========== -->
+<main>
+  <div class="results-row">
+    <span id="results-count"></span>
+    <span style="font-size:12px;color:var(--text-3)">Download data: CRAN logs 2020–Mar 2026</span>
+  </div>
   <div id="package-grid"></div>
 </main>
 
 <footer>
-  Built by <strong>Pharmacoevidence</strong> &middot; CRAN ecosystem scan March 2026 &middot;
-  <a href="https://cran.r-project.org" target="_blank" rel="noopener" style="color:var(--accent)">CRAN</a> &middot;
-  <a href="https://r-hta.org" target="_blank" rel="noopener" style="color:var(--accent)">R-HTA</a>
+  Data sourced from <a href="https://cran.r-project.org" target="_blank">CRAN</a>,
+  <a href="https://cranlogs.r-pkg.org" target="_blank">CRAN logs</a>, and GitHub &middot;
+  Built by <strong style="color:var(--text-2)">Pharmacoevidence</strong> &middot;
+  <a href="https://r-hta.org" target="_blank">R-HTA community</a>
 </footer>
 
 <script>
-// ============================================================
-//  PACKAGE DATA
-// ============================================================
+// =====================================================================
+//  DATA — real packages, real stats (CRAN scan March 2026)
+// =====================================================================
 const PACKAGES = [
-  // ---- EXISTING — Cost-effectiveness modelling ----
+  // ── Cost-effectiveness modelling ─────────────────────────────────
   {
     name: "heemod",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "1.1.0",
+    updated: "2025-06-16",
     category: "Cost-effectiveness modelling",
-    desc: "Markov state-transition models with PSA, DSA, and heterogeneity. The closest to an all-in-one HE modelling framework on CRAN.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=heemod"
+    catClass: "cat-cem",
+    availability: "cran",
+    desc: "Markov state-transition models with probabilistic and deterministic sensitivity analysis, heterogeneity analysis, and time-dependency (semi-Markov and non-homogeneous models). The most complete all-in-one HE modelling framework on CRAN.",
+    authors: "Kevin Zarca, Antoine Filipovic-Pierucci",
+    cranUrl: "https://cran.r-project.org/package=heemod",
+    githubUrl: "https://github.com/aphp/heemod",
+    totalDownloads: 66612,
+    monthlyDownloads: 877
   },
   {
     name: "hesim",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "0.5.8",
+    updated: "2026-01-13",
     category: "Cost-effectiveness modelling",
-    desc: "Individual-level simulation, partitioned survival models, PSA-ready. Strong for oncology NMA-fed models.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=hesim"
+    catClass: "cat-cem",
+    availability: "cran",
+    desc: "Health economic simulation modelling and decision analysis. Supports cohort discrete-time state transition models, partitioned survival models, and individual-level continuous-time state transition models with PSA.",
+    authors: "Devin Incerti, Jeroen P. Jansen",
+    cranUrl: "https://cran.r-project.org/package=hesim",
+    githubUrl: "https://github.com/hesim-dev/hesim",
+    totalDownloads: 55266,
+    monthlyDownloads: 638
   },
   {
     name: "dampack",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "1.0.2",
+    updated: "2024-09-30",
     category: "Cost-effectiveness modelling",
-    desc: "Decision-analytic modelling — CEACs, tornado plots, EVPI, EVPPI. Good companion to heemod.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=dampack"
+    catClass: "cat-cem",
+    availability: "cran",
+    desc: "Decision-analytic modelling package for analysing and visualising health economic model outputs — CEACs, tornado plots, EVPI, EVPPI, and cost-effectiveness acceptability frontiers.",
+    authors: "Fernando Alarid-Escudero, Eva Enns, David Garibay",
+    cranUrl: "https://cran.r-project.org/package=dampack",
+    githubUrl: "https://github.com/DARTH-git/dampack",
+    totalDownloads: 26619,
+    monthlyDownloads: 535
   },
   {
     name: "rdecision",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "1.3.0",
+    updated: "2025-02-10",
     category: "Cost-effectiveness modelling",
-    desc: "Object-oriented decision trees and semi-Markov models.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=rdecision"
+    catClass: "cat-cem",
+    availability: "cran",
+    desc: "Object-oriented framework for building and analysing decision trees and semi-Markov models in health economics, with support for probabilistic uncertainty distributions.",
+    authors: "Andrew Sims, Kim Fairbairn, Paola Cognigni",
+    cranUrl: "https://cran.r-project.org/package=rdecision",
+    githubUrl: "https://github.com/ajsims1704/rdecision",
+    totalDownloads: 36168,
+    monthlyDownloads: 862
   },
   {
     name: "BCEA",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "2.4.83",
+    updated: "2025-11-26",
     category: "Cost-effectiveness modelling",
-    desc: "Bayesian cost-effectiveness analysis, net benefit framework, full plotting suite.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=BCEA"
+    catClass: "cat-cem",
+    availability: "cran",
+    desc: "Bayesian cost-effectiveness analysis using the net benefit framework. Computes the most cost-effective intervention and generates CEACs, CEAFs, EVPI estimates, and uncertainty summaries.",
+    authors: "Gianluca Baio, Andrea Berardi, Anna Heath, Nathan Green",
+    cranUrl: "https://cran.r-project.org/package=BCEA",
+    githubUrl: "https://github.com/giabaio/BCEA",
+    totalDownloads: 64870,
+    monthlyDownloads: 690
   },
   {
     name: "ICEinfer",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "1.3",
+    updated: "2020-10-12",
     category: "Cost-effectiveness modelling",
-    desc: "Incremental cost-effectiveness inference from two independent samples.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=ICEinfer"
+    catClass: "cat-cem",
+    availability: "cran",
+    desc: "Incremental cost-effectiveness inference from two independent unbiased samples using bivariate bootstrap resampling, confidence region generation, and acceptability curves.",
+    authors: "Bob Obenchain",
+    cranUrl: "https://cran.r-project.org/package=ICEinfer",
+    githubUrl: null,
+    totalDownloads: 29041,
+    monthlyDownloads: 208
   },
 
-  // ---- EXISTING — Survival analysis ----
+  // ── Survival analysis ─────────────────────────────────────────────
   {
     name: "survHE",
-    status: "cran",
-    statusLabel: "CRAN",
-    category: "Survival analysis for HTA",
-    desc: "Survival analysis for HE evaluation — parametric and Bayesian; NICE DSU TSD 14 aligned.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=survHE"
+    version: "2.0.51",
+    updated: "2026-01-15",
+    category: "Survival analysis",
+    catClass: "cat-surv",
+    availability: "cran",
+    desc: "Survival analysis for health economic evaluation. Fits a wide range of parametric models using both frequentist (MLE) and Bayesian (MCMC/INLA) methods, aligned with NICE DSU TSD 14 recommendations.",
+    authors: "Gianluca Baio, Andrea Berardi, Philip Cooney, Nathan Green",
+    cranUrl: "https://cran.r-project.org/package=survHE",
+    githubUrl: "https://github.com/giabaio/survHE",
+    totalDownloads: 48433,
+    monthlyDownloads: 995
   },
   {
     name: "flexsurv",
-    status: "cran",
-    statusLabel: "CRAN",
-    category: "Survival analysis for HTA",
-    desc: "Flexible parametric survival models including Royston-Parmar splines and generalised gamma.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=flexsurv"
+    version: "2.3.2",
+    updated: "2024-08-17",
+    category: "Survival analysis",
+    catClass: "cat-surv",
+    availability: "cran",
+    desc: "Flexible parametric survival and multi-state models including Royston-Parmar splines, generalised gamma, and generalised F distributions. Widely used for extrapolation in oncology HTA submissions.",
+    authors: "Christopher Jackson, Paul Metcalfe, Jordan Amdahl",
+    cranUrl: "https://cran.r-project.org/package=flexsurv",
+    githubUrl: "https://github.com/chjackson/flexsurv",
+    totalDownloads: 521231,
+    monthlyDownloads: 11137
   },
   {
     name: "survminer",
-    status: "cran",
-    statusLabel: "CRAN",
-    category: "Survival analysis for HTA",
-    desc: "Publication-ready Kaplan-Meier plots; widely used in HEOR dossier submissions.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=survminer"
+    version: "0.5.2",
+    updated: "2026-02-25",
+    category: "Survival analysis",
+    catClass: "cat-surv",
+    availability: "cran",
+    desc: "Drawing publication-ready survival curves using ggplot2. Produces Kaplan-Meier plots with risk tables, censoring marks, and statistical annotations. The standard for KM plots in HEOR submissions.",
+    authors: "Alboukadel Kassambara, Marcin Kosinski, Przemyslaw Biecek",
+    cranUrl: "https://cran.r-project.org/package=survminer",
+    githubUrl: "https://github.com/kassambara/survminer",
+    totalDownloads: 2551212,
+    monthlyDownloads: 58657
   },
   {
-    name: "DigitizeR",
-    status: "limited",
-    statusLabel: "Limited",
-    category: "Survival analysis for HTA",
-    desc: "KM curve digitization from published images. Widely needed but limited automation and maintenance.",
-    fns: [],
-    tier: null,
-    cranUrl: null
+    name: "ggsurvfit",
+    version: "1.2.0",
+    updated: "2025-09-13",
+    category: "Survival analysis",
+    catClass: "cat-surv",
+    availability: "cran",
+    desc: "Flexible, ggplot2-native time-to-event figures with risk tables, censor marks, and quantile annotations. Modern alternative to survminer with tighter ggplot2 integration and pharmaverse compatibility.",
+    authors: "Daniel D. Sjoberg, Mark Baillie",
+    cranUrl: "https://cran.r-project.org/package=ggsurvfit",
+    githubUrl: "https://github.com/pharmaverse/ggsurvfit",
+    totalDownloads: 236131,
+    monthlyDownloads: 7587
+  },
+  {
+    name: "IPDfromKM",
+    version: "0.1.10",
+    updated: "2020-11-11",
+    category: "Survival analysis",
+    catClass: "cat-surv",
+    availability: "cran",
+    desc: "Reconstructs individual patient data (IPD) from published Kaplan-Meier survival curves using the modified iterative KM estimation algorithm (Guyot 2012). Essential for NMA and economic modelling from literature.",
+    authors: "Na Liu, J. Jack Lee, Yanhong Zhou",
+    cranUrl: "https://cran.r-project.org/package=IPDfromKM",
+    githubUrl: null,
+    totalDownloads: 25878,
+    monthlyDownloads: 717
   },
 
-  // ---- EXISTING — NMA & indirect comparison ----
+  // ── Network meta-analysis ─────────────────────────────────────────
   {
     name: "netmeta",
-    status: "cran",
-    statusLabel: "CRAN",
-    category: "NMA & indirect comparison",
-    desc: "Frequentist NMA — most downloaded NMA package. SUCRA, P-score, forest plots, league tables.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=netmeta"
+    version: "3.3-1",
+    updated: "2026-01-28",
+    category: "Network meta-analysis",
+    catClass: "cat-nma",
+    availability: "cran",
+    desc: "Frequentist network meta-analysis using graph-theoretical methods. Provides SUCRA and P-scores for treatment ranking, consistency evaluation, network plots, forest plots, meta-regression, and league tables.",
+    authors: "Gerta Rücker, Guido Schwarzer, Orestis Efthimiou",
+    cranUrl: "https://cran.r-project.org/package=netmeta",
+    githubUrl: "https://github.com/guido-s/netmeta",
+    totalDownloads: 420449,
+    monthlyDownloads: 20504
   },
   {
     name: "gemtc",
-    status: "cran",
-    statusLabel: "CRAN",
-    category: "NMA & indirect comparison",
-    desc: "Bayesian NMA via MCMC (JAGS/OpenBUGS). GeMTC interface for network meta-analysis.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=gemtc"
+    version: "1.1-0",
+    updated: "2025-07-08",
+    category: "Network meta-analysis",
+    catClass: "cat-nma",
+    availability: "cran",
+    desc: "Bayesian network meta-analysis via MCMC (JAGS). Implements the GeMTC framework for consistency/inconsistency models, heterogeneity assessment, and ranking probabilities for HTA submissions.",
+    authors: "Gert van Valkenhoef, Joel Kuiper",
+    cranUrl: "https://cran.r-project.org/package=gemtc",
+    githubUrl: "https://github.com/gertvv/gemtc",
+    totalDownloads: 162888,
+    monthlyDownloads: 4173
   },
   {
     name: "pcnetmeta",
-    status: "cran",
-    statusLabel: "CRAN",
-    category: "NMA & indirect comparison",
-    desc: "Patient-centred NMA with arm-based models using a Bayesian approach.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=pcnetmeta"
+    version: "2.8",
+    updated: "2022-08-31",
+    category: "Network meta-analysis",
+    catClass: "cat-nma",
+    availability: "cran",
+    desc: "Patient-centred Bayesian network meta-analysis using arm-based models for binary, continuous, and count outcomes. Implements contrast-based and arm-based likelihood formulations.",
+    authors: "Lifeng Lin, Jing Zhang, Haitao Chu",
+    cranUrl: "https://cran.r-project.org/package=pcnetmeta",
+    githubUrl: null,
+    totalDownloads: 41346,
+    monthlyDownloads: 458
   },
   {
     name: "multinma",
-    status: "cran",
-    statusLabel: "CRAN",
-    category: "NMA & indirect comparison",
-    desc: "Multi-level NMA with IPD and aggregate data. Newer package gaining traction in HTA submissions.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=multinma"
+    version: "0.8.1",
+    updated: "2025-05-31",
+    category: "Network meta-analysis",
+    catClass: "cat-nma",
+    availability: "cran",
+    desc: "Bayesian network meta-analysis and meta-regression with individual patient data (IPD), aggregate data, or mixed data types using Stan. Supports population-adjusted indirect comparisons aligned with NICE methods.",
+    authors: "David M. Phillippo",
+    cranUrl: "https://cran.r-project.org/package=multinma",
+    githubUrl: "https://github.com/dmphillippo/multinma",
+    totalDownloads: 44986,
+    monthlyDownloads: 1125
   },
 
-  // ---- EXISTING — Quality of life ----
+  // ── Quality of life & utility ─────────────────────────────────────
   {
     name: "eq5d",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "0.16.2",
+    updated: "2026-02-27",
     category: "Quality of life & utility",
-    desc: "EQ-5D-3L/5L/Y index calculation, all major country value sets, DSU mappings, crosswalk. Includes Shiny app.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=eq5d"
+    catClass: "cat-qol",
+    availability: "cran",
+    desc: "Calculates EQ-5D-3L, EQ-5D-5L, and EQ-5D-Y index scores using all major country value sets. Includes DSU value set mappings, EQ-5D crosswalk, and an interactive Shiny web app.",
+    authors: "Fraser Morton, Jagtar Singh Nijjar",
+    cranUrl: "https://cran.r-project.org/package=eq5d",
+    githubUrl: "https://github.com/fragla/eq5d",
+    totalDownloads: 84337,
+    monthlyDownloads: 1700
   },
   {
     name: "PROscorer",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "0.0.4",
+    updated: "2023-10-16",
     category: "Quality of life & utility",
-    desc: "Scoring algorithms for patient-reported outcome instruments including SF-36 and PROMIS.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=PROscorer"
+    catClass: "cat-qol",
+    availability: "cran",
+    desc: "Extensible repository of scoring functions for patient-reported outcome instruments including SF-36, PROMIS, and other psychometric tools used in clinical trials and HTA submissions.",
+    authors: "Ray Baser",
+    cranUrl: "https://cran.r-project.org/package=PROscorer",
+    githubUrl: "https://github.com/raybaser/PROscorer",
+    totalDownloads: 25286,
+    monthlyDownloads: 262
   },
   {
     name: "QoLR",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "1.0.3",
+    updated: "2017-05-02",
     category: "Quality of life & utility",
-    desc: "QoL analysis in oncology trials — time to deterioration and responder analyses.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=QoLR"
+    catClass: "cat-qol",
+    availability: "cran",
+    desc: "Health-related quality of life analysis in oncology clinical trials. Generates EORTC QLQ-C30 scores and determines time to quality-of-life score deterioration in longitudinal analyses.",
+    authors: "Amelie Anota",
+    cranUrl: "https://cran.r-project.org/package=QoLR",
+    githubUrl: null,
+    totalDownloads: 2840,
+    monthlyDownloads: 32
   },
 
-  // ---- EXISTING — Treatment switching ----
+  // ── Treatment switching ───────────────────────────────────────────
   {
     name: "trtswitch",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "0.2.5",
+    updated: "2026-03-13",
     category: "Treatment switching",
-    desc: "RPSFTM, IPE, IPCW, MSM, and TSE methods for treatment switching adjustment. Very new (2024–25).",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=trtswitch"
+    catClass: "cat-ts",
+    availability: "cran",
+    desc: "Comprehensive treatment switching adjustment methods for RCTs: RPSFTM, IPE, IPCW, marginal structural models (MSM), and two-stage estimation (TSE). Newly released (2024–25) with full NICE compliance in mind.",
+    authors: "Kaifeng Lu",
+    cranUrl: "https://cran.r-project.org/package=trtswitch",
+    githubUrl: "https://github.com/kaifenglu/trtswitch",
+    totalDownloads: 6628,
+    monthlyDownloads: 426
   },
   {
     name: "rpsftm",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "1.2.9",
+    updated: "2024-03-12",
     category: "Treatment switching",
-    desc: "Rank-preserving structural failure time model for treatment switching adjustment.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=rpsftm"
+    catClass: "cat-ts",
+    availability: "cran",
+    desc: "Rank-preserving structural failure time model (Robins & Tsiatis 1991) for adjusting treatment effect estimates in RCTs where crossover has occurred, using g-estimation and AFT models.",
+    authors: "Simon Bond, Annabel Allison",
+    cranUrl: "https://cran.r-project.org/package=rpsftm",
+    githubUrl: null,
+    totalDownloads: 31514,
+    monthlyDownloads: 274
   },
 
-  // ---- EXISTING — Population adjustment ----
+  // ── Population adjustment ─────────────────────────────────────────
   {
     name: "maic",
-    status: "partial",
-    statusLabel: "Partial",
-    category: "Population adjustment (MAIC/STC)",
-    desc: "Matching-adjusted indirect comparison. Basic functionality; limited diagnostics and no ESS output.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=maic"
+    version: "0.1.4",
+    updated: "2022-04-27",
+    category: "Population adjustment",
+    catClass: "cat-pa",
+    availability: "cran",
+    desc: "Matching-adjusted indirect comparison (MAIC) for indirect treatment comparisons when IPD is available for one trial and only aggregate data for another. Implements NICE DSU TSD 18 methodology.",
+    authors: "Rob Young (HEOR Ltd)",
+    cranUrl: "https://cran.r-project.org/package=maic",
+    githubUrl: "https://github.com/heorltd/maic",
+    totalDownloads: 21631,
+    monthlyDownloads: 61
+  },
+  {
+    name: "WeightIt",
+    version: "1.6.0",
+    updated: "2026-03-19",
+    category: "Population adjustment",
+    catClass: "cat-pa",
+    availability: "cran",
+    desc: "Generates balancing weights for causal effect estimation in observational studies. Supports binary, multi-category, and continuous treatments via propensity scores, entropy balancing, CBPS, and more. Used for RWE and MAIC-adjacent workflows.",
+    authors: "Noah Greifer",
+    cranUrl: "https://cran.r-project.org/package=WeightIt",
+    githubUrl: "https://github.com/ngreifer/WeightIt",
+    totalDownloads: 249534,
+    monthlyDownloads: 8163
+  },
+  {
+    name: "MatchIt",
+    version: "4.7.2",
+    updated: "2025-05-30",
+    category: "Population adjustment",
+    catClass: "cat-pa",
+    availability: "cran",
+    desc: "Nonparametric preprocessing for causal inference via matching. Implements exact, propensity score, Mahalanobis distance, and genetic matching methods. Widely used in comparative effectiveness research and RWE studies.",
+    authors: "Daniel Ho, Kosuke Imai, Gary King, Noah Greifer",
+    cranUrl: "https://cran.r-project.org/package=MatchIt",
+    githubUrl: "https://github.com/kosukeimai/MatchIt",
+    totalDownloads: 1962152,
+    monthlyDownloads: 23569
+  },
+  {
+    name: "cobalt",
+    version: "4.6.2",
+    updated: "2026-01-29",
+    category: "Population adjustment",
+    catClass: "cat-pa",
+    availability: "cran",
+    desc: "Covariate balance tables and plots for assessing the quality of matching, weighting, or subclassification. Integrates with MatchIt, WeightIt, and other preprocessing packages. Essential for MAIC diagnostics.",
+    authors: "Noah Greifer",
+    cranUrl: "https://cran.r-project.org/package=cobalt",
+    githubUrl: "https://github.com/ngreifer/cobalt",
+    totalDownloads: 629088,
+    monthlyDownloads: 16746
   },
 
-  // ---- EXISTING — Value of information ----
+  // ── Value of information ──────────────────────────────────────────
   {
     name: "voi",
-    status: "cran",
-    statusLabel: "CRAN",
+    version: "1.0.3",
+    updated: "2024-09-16",
     category: "Value of information",
-    desc: "Value of information analysis — EVPI and EVPPI calculations for decision models.",
-    fns: [],
-    tier: null,
-    cranUrl: "https://cran.r-project.org/package=voi"
+    catClass: "cat-voi",
+    availability: "cran",
+    desc: "Expected value of information analysis for decision-analytic models. Calculates EVPI, EVPPI, EVSI, and ENBS using multiple methods (GAM, moment-matching, regression). Aligned with NICE DSU TSD 7 and TSD 36.",
+    authors: "Christopher Jackson, Anna Heath, Gianluca Baio, Mark Strong",
+    cranUrl: "https://cran.r-project.org/package=voi",
+    githubUrl: "https://github.com/chjackson/voi",
+    totalDownloads: 18001,
+    monthlyDownloads: 489
   },
 
-  // ---- EXISTING — Utility mapping ----
+  // ── Statistical methods ────────────────────────────────────────────
   {
-    name: "mappe",
-    status: "partial",
-    statusLabel: "Partial",
-    category: "Utility mapping",
-    desc: "Utility mapping using Hernández-Alava SMM and CLAD models. Limited documentation and examples.",
-    fns: [],
-    tier: null,
-    cranUrl: null
+    name: "meta",
+    version: "8.2-1",
+    updated: "2025-09-01",
+    category: "Statistical methods",
+    catClass: "cat-stat",
+    availability: "cran",
+    desc: "General meta-analysis package supporting common-effect and random-effects models, forest plots, funnel plots, meta-regression, subgroup analysis, and Bayesian random-effects models. Foundation for HEOR evidence synthesis.",
+    authors: "Guido Schwarzer",
+    cranUrl: "https://cran.r-project.org/package=meta",
+    githubUrl: "https://github.com/guido-s/meta",
+    totalDownloads: 1542491,
+    monthlyDownloads: 37192
   },
   {
-    name: "tobit",
-    status: "generic",
-    statusLabel: "Generic",
-    category: "Utility mapping",
-    desc: "Tobit regression — used in utility mapping workflows but not HEOR-specific.",
-    fns: [],
-    tier: null,
-    cranUrl: null
-  },
-
-  // ============================================================
-  //  PROPOSED PACKAGES
-  // ============================================================
-
-  // ---- Budget impact & market access ----
-  {
-    name: "htaBIM",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Budget impact & market access",
-    desc: "ISPOR-compliant cohort-based BIM framework with market share dynamics, incident/prevalent population engines, multi-payer scenario analysis, annualised cost outputs, and Shiny interface.",
-    fns: ["bim_model()", "market_share()", "payer_perspective()", "bim_report()"],
-    tier: "tier1",
-    tierLabel: "Tier 1 — Critical",
-    cranUrl: null
-  },
-  {
-    name: "htaMarketAccess",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Budget impact & market access",
-    desc: "Models net price scenarios, rebate tiers, formulary positioning decisions, patient share forecasting, and managed entry agreement (MEA) structures.",
-    fns: ["net_price()", "rebate_scenario()", "mea_model()", "formulary_sim()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-
-  // ---- Population-adjusted indirect comparison ----
-  {
-    name: "nicePAIC",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Population adjustment (MAIC/STC)",
-    desc: "Full MAIC (entropy balancing, propensity MAIC) and STC framework. Bootstrap CIs, ESS diagnostics, covariate balance plots, GRADE-like uncertainty assessment. NICE DSU TSD 18 aligned.",
-    fns: ["maic_fit()", "stc_fit()", "ess_diagnostic()", "balance_plot()", "paic_report()"],
-    tier: "tier1",
-    tierLabel: "Tier 1 — Critical",
-    cranUrl: null
-  },
-  {
-    name: "ipdfromKM",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Survival analysis for HTA",
-    desc: "Implements the Guyot (2012) algorithm for IPD reconstruction from published KM curves — multi-arm support, risk-table integration, digitization API, uncertainty propagation, and NICE-ready outputs.",
-    fns: ["digitize_km()", "reconstruct_ipd()", "km_uncertainty()", "ipd_export()"],
-    tier: "tier1",
-    tierLabel: "Tier 1 — Critical",
-    cranUrl: null
-  },
-
-  // ---- Utility mapping & QoL ----
-  {
-    name: "utilityMapper",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Utility mapping",
-    desc: "Maps EORTC QLQ-C30, FACT-G, HAQ-DI, DLQI, and custom PRO scales to EQ-5D/SF-6D. Implements SMM, CLAD, OLS, Tobit with NICE DSU TSD 10 model selection and uncertainty propagation.",
-    fns: ["map_utility()", "smm_fit()", "clad_fit()", "model_selection_guidance()"],
-    tier: "tier1",
-    tierLabel: "Tier 1 — Critical",
-    cranUrl: null
-  },
-  {
-    name: "htaQoL",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Quality of life & utility",
-    desc: "MCID/MID estimation methods, responder analysis, time-to-deterioration models, longitudinal HRQoL trajectories, and automated HTA-style table generation for PRO endpoints.",
-    fns: ["mcid_estimate()", "responder_analysis()", "ttd_model()", "qol_trajectory()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-
-  // ---- Real-world evidence ----
-  {
-    name: "htaRWE",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Real-world evidence",
-    desc: "ICD-9/10 code grouping, comorbidity scoring (Charlson, Elixhauser), treatment episode construction, IPTW/matching for comparative effectiveness, standardised diagnostics aligned with ISPOR/HTAi RWE frameworks.",
-    fns: ["icd_group()", "comorbidity_score()", "treatment_episode()", "iptw_hta()"],
-    tier: "tier2",
-    tierLabel: "Tier 2 — High",
-    cranUrl: null
-  },
-  {
-    name: "rweValidator",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Real-world evidence",
-    desc: "Automated checks aligned to NICE Evidence Standards Framework, ISPOR RWE Transparency Checklist, and FDA 2023 RWE guidance. Generates structured bias assessment tables for dossier inclusion.",
-    fns: ["esf_assess()", "bias_table()", "rwe_checklist()", "transparency_score()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-
-  // ---- HTA-body specific tools ----
-  {
-    name: "niceHTA",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "HTA-body specific tools",
-    desc: "Company submission templates (Sections B/C/D), automated cross-checking against NICE Methods Guide 2022, ERG-style sensitivity analysis tables, ACD response structure, and audit trail generation.",
-    fns: ["nice_section_b()", "nice_section_c()", "methods_check()", "acd_response()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-  {
-    name: "euHTA",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "HTA-body specific tools",
-    desc: "JCA PICO framing tools, REA (relative effectiveness assessment) templates, cross-country value set harmonisation, country-specific economic adaptation, and EU HTA Regulation Article 13/14 checklists.",
-    fns: ["jca_pico()", "rea_template()", "country_adapt()", "jca_checklist()"],
-    tier: "tier2",
-    tierLabel: "Tier 2 — High",
-    cranUrl: null
-  },
-  {
-    name: "cadthHTA",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "HTA-body specific tools",
-    desc: "CADTH pharmacoeconomic guidelines (2021) alignment, provincial payer perspective tools, Canadian unit costs integration, CDR/RCERC submission templates, and pCPA negotiation scenario modelling.",
-    fns: ["cadth_perspective()", "provincial_costs()", "cdr_template()", "pcpa_scenario()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-  {
-    name: "htaMCDA",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "HTA-body specific tools",
-    desc: "EVIDEM framework implementation, swing-weighting elicitation, DIRECT/SWING weight estimation, value tree construction, MCDA sensitivity analysis, and rare disease benefit-risk assessment.",
-    fns: ["value_tree()", "swing_weights()", "mcda_model()", "mcda_sensitivity()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-
-  // ---- Modelling methodology ----
-  {
-    name: "treatWaning",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Modelling methodology",
-    desc: "Piecewise, exponential, and Weibull waning functions for treatment benefit, NICE ERG-style waning sensitivity analyses, Bayesian waning parameter estimation, and structured uncertainty reporting.",
-    fns: ["waning_model()", "waning_psa()", "waning_scenario()", "waning_report()"],
-    tier: "tier2",
-    tierLabel: "Tier 2 — High",
-    cranUrl: null
-  },
-  {
-    name: "rareDiseaseHTA",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Modelling methodology",
-    desc: "Bayesian borrowing from registry/natural history data, two-dimensional banding Markov structures (e.g. IgAN UP/C, MG MG-ADL banding), small-sample extrapolation methods, NICE HST template alignment.",
-    fns: ["bayesian_borrow()", "banding_markov()", "small_sample_extrap()", "hst_template()"],
-    tier: "tier2",
-    tierLabel: "Tier 2 — High",
-    cranUrl: null
-  },
-  {
-    name: "adamHEOR",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Modelling methodology",
-    desc: "Standardised pipeline from CDISC ADaM datasets (ADTTE, ADRS, ADCM, ADLB, ADEX) to model-ready HEOR parameters. Automates transition probability calculation, response-based utility assignment, and resource use extraction.",
-    fns: ["adtte_to_transitions()", "adrs_to_utilities()", "adcm_to_costs()", "adam_model_prep()"],
-    tier: "tier1",
-    tierLabel: "Tier 1 — High",
-    cranUrl: null
-  },
-  {
-    name: "partSurvHTA",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Modelling methodology",
-    desc: "Standardised PartSA framework for oncology: OS/PFS state partitioning, multi-extrapolation scenario matrix, NMA-fed parametric inputs, automated QALY/cost calculations, and structured comparison tables.",
-    fns: ["partsa_model()", "extrap_scenario()", "nma_to_surv()", "partsa_report()"],
-    tier: "tier2",
-    tierLabel: "Tier 2 — High",
-    cranUrl: null
-  },
-
-  // ---- Evidence synthesis & SLR ----
-  {
-    name: "htaSLR",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Evidence synthesis & SLR",
-    desc: "PRISMA 2020 flow diagram generation, structured data extraction templates, GRADE evidence tables, NMA feasibility assessment, and HTA evidence gap mapping — all in reproducible R workflows.",
-    fns: ["prisma_flow()", "extraction_template()", "grade_table()", "evidence_gap_map()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-  {
-    name: "nmaViz",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "NMA & indirect comparison",
-    desc: "Network geometry plots, league tables with CIs, SUCRA/P-score heatmaps, contribution matrices, GRADE NMA certainty tables, and publication-ready figures for HTA dossiers.",
-    fns: ["network_plot()", "league_table()", "grade_nma()", "contribution_heatmap()"],
-    tier: "tier2",
-    tierLabel: "Tier 2 — High",
-    cranUrl: null
-  },
-
-  // ---- Reporting & automation ----
-  {
-    name: "htaReport",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Reporting & automation",
-    desc: "Quarto/R Markdown templates for NICE, CADTH, and EU-HTA submissions. Auto-generates Section C economic reports, sensitivity analysis tables, PSA outputs, and submission-ready Word/PDF documents.",
-    fns: ["hta_template()", "render_submission()", "model_audit_trail()", "version_track()"],
-    tier: "tier2",
-    tierLabel: "Tier 2 — High",
-    cranUrl: null
-  },
-  {
-    name: "htaValidate",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Reporting & automation",
-    desc: "Unit testing framework for HE models, cross-validation against Excel reference models, face validity automated checks, ISPOR-AMCP model transparency checklist, and structured validation documentation.",
-    fns: ["model_unit_test()", "excel_crossval()", "face_validity()", "transparency_report()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-
-  // ---- Payer & pricing analytics ----
-  {
-    name: "htaThreshold",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Payer & pricing analytics",
-    desc: "Optimal price derivation from ICER thresholds, multi-country WTP landscapes, ICER sensitivity to price, value-based pricing under different payer WTP assumptions, and MEA break-even analysis.",
-    fns: ["optimal_price()", "wtp_landscape()", "vbp_model()", "mea_breakeven()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-  {
-    name: "biosimHTA",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Payer & pricing analytics",
-    desc: "Biosimilar market share erosion curves (logistic, linear, step), price erosion scenarios, international reference pricing impact, automatic indication-level BIM, and payer savings quantification.",
-    fns: ["biosim_share()", "price_erosion()", "irp_impact()", "biosim_bim()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
-  },
-
-  // ---- Advanced analytics ----
-  {
-    name: "htaVOI",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Value of information",
-    desc: "EVPI, EVPPI (GAM, moment-matching), EVSI with strong prior methods, ENBS for research design decisions, and structured VOI reporting aligned to NICE DSU TSD 7 and TSD 36.",
-    fns: ["evpi()", "evppi_gam()", "evsi()", "enbs()", "voi_report()"],
-    tier: "tier2",
-    tierLabel: "Tier 2 — High",
-    cranUrl: null
-  },
-  {
-    name: "htaCalibrateML",
-    status: "proposed",
-    statusLabel: "Proposed",
-    category: "Modelling methodology",
-    desc: "Neural network metamodelling (BayCANN), Gaussian process emulation for computationally intensive HE models, history matching, and structured calibration reporting for HTA submission validation.",
-    fns: ["baycann_calibrate()", "gp_emulate()", "history_match()", "calibration_report()"],
-    tier: "tier3",
-    tierLabel: "Tier 3 — Moderate",
-    cranUrl: null
+    name: "metafor",
+    version: "4.8-0",
+    updated: "2025-01-28",
+    category: "Statistical methods",
+    catClass: "cat-stat",
+    availability: "cran",
+    desc: "Comprehensive meta-analysis package with effect size calculations, fixed/random-effects models, moderator analysis, publication bias tests, and extensive visualisation capabilities. Standard in clinical evidence synthesis.",
+    authors: "Wolfgang Viechtbauer",
+    cranUrl: "https://cran.r-project.org/package=metafor",
+    githubUrl: "https://github.com/wviechtb/metafor",
+    totalDownloads: 1872680,
+    monthlyDownloads: 37160
   }
 ];
 
-// ============================================================
-//  BADGE CONFIG
-// ============================================================
-const STATUS_BADGE = {
-  cran:     { cls: "b-green",  label: "CRAN" },
-  limited:  { cls: "b-amber",  label: "Limited" },
-  partial:  { cls: "b-amber",  label: "Partial" },
-  generic:  { cls: "b-gray",   label: "Generic" },
-  proposed: { cls: "b-purple", label: "Proposed" }
+// =====================================================================
+//  LEGEND & CATEGORY COLOURS
+// =====================================================================
+const CAT_COLOURS = {
+  "Cost-effectiveness modelling": "#6366f1",
+  "Survival analysis":             "#0d9488",
+  "Network meta-analysis":         "#3b82f6",
+  "Quality of life & utility":     "#f59e0b",
+  "Treatment switching":           "#ec4899",
+  "Population adjustment":         "#8b5cf6",
+  "Value of information":          "#ef4444",
+  "Statistical methods":           "#64748b"
 };
 
-const TIER_BADGE = {
-  tier1: { cls: "b-red",   label: "Tier 1" },
-  tier2: { cls: "b-blue",  label: "Tier 2" },
-  tier3: { cls: "b-amber", label: "Tier 3" }
-};
+const MAX_TOTAL = Math.max(...PACKAGES.map(p => p.totalDownloads));
 
-// ============================================================
-//  STATE
-// ============================================================
-let activeStatus = "all";
-let activeCategory = "all";
-let searchQuery = "";
-let sortMode = "default";
+// =====================================================================
+//  FORMAT HELPERS
+// =====================================================================
+function fmtNum(n) {
+  if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
+  if (n >= 1e3) return (n / 1e3).toFixed(0) + "K";
+  return n.toString();
+}
+function fmtDate(d) {
+  if (!d) return "—";
+  const dt = new Date(d);
+  return dt.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+}
 
-// ============================================================
-//  INITIALISE
-// ============================================================
-const categories = [...new Set(PACKAGES.map(p => p.category))].sort();
-const categorySelect = document.getElementById("category-select");
+// =====================================================================
+//  BUILD CATEGORY PILLS
+// =====================================================================
+const categories = [...new Set(PACKAGES.map(p => p.category))];
+const catPillContainer = document.getElementById("cat-pills");
 categories.forEach(cat => {
-  const opt = document.createElement("option");
-  opt.value = cat;
-  opt.textContent = cat;
-  categorySelect.appendChild(opt);
+  const btn = document.createElement("button");
+  btn.className = "pill";
+  btn.dataset.cat = cat;
+  btn.textContent = cat;
+  catPillContainer.appendChild(btn);
 });
 
-categorySelect.addEventListener("change", e => {
-  activeCategory = e.target.value;
-  render();
+// build legend
+const legendEl = document.getElementById("legend");
+Object.entries(CAT_COLOURS).forEach(([cat, colour]) => {
+  legendEl.innerHTML += `
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${colour}"></div>
+      ${cat}
+    </div>`;
 });
 
-document.querySelectorAll(".pill[data-status]").forEach(btn => {
+// =====================================================================
+//  STATE
+// =====================================================================
+let activeCategory = "all";
+let activeAvail = "all";
+let searchQuery = "";
+let sortMode = "downloads_total";
+
+// pill interactions
+document.querySelectorAll("[data-cat]").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".pill[data-status]").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll("[data-cat]").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-    activeStatus = btn.dataset.status;
+    activeCategory = btn.dataset.cat;
+    render();
+  });
+});
+
+document.querySelectorAll("[data-avail]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-avail]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeAvail = btn.dataset.avail;
     render();
   });
 });
@@ -987,101 +980,127 @@ document.getElementById("sort-select").addEventListener("change", e => {
   render();
 });
 
-// ============================================================
+// =====================================================================
 //  FILTER + SORT
-// ============================================================
+// =====================================================================
 function filterPackages() {
   return PACKAGES.filter(pkg => {
-    // status filter
-    if (activeStatus === "cran" && pkg.status !== "cran") return false;
-    if (activeStatus === "proposed" && pkg.status !== "proposed") return false;
-    if (activeStatus === "tier1" && pkg.tier !== "tier1") return false;
-
-    // category filter
     if (activeCategory !== "all" && pkg.category !== activeCategory) return false;
-
-    // search
+    if (activeAvail === "cran" && pkg.availability !== "cran") return false;
+    if (activeAvail === "github" && !pkg.githubUrl) return false;
     if (searchQuery) {
-      const haystack = [pkg.name, pkg.category, pkg.desc, ...(pkg.fns || [])].join(" ").toLowerCase();
-      if (!haystack.includes(searchQuery)) return false;
+      const hay = [pkg.name, pkg.category, pkg.desc, pkg.authors].join(" ").toLowerCase();
+      if (!hay.includes(searchQuery)) return false;
     }
-
     return true;
   });
 }
 
 function sortPackages(pkgs) {
-  if (sortMode === "name")     return [...pkgs].sort((a,b) => a.name.localeCompare(b.name));
-  if (sortMode === "category") return [...pkgs].sort((a,b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
-  if (sortMode === "priority") {
-    const order = { tier1: 0, tier2: 1, tier3: 2, null: 3 };
-    return [...pkgs].sort((a,b) => (order[a.tier] ?? 3) - (order[b.tier] ?? 3) || a.name.localeCompare(b.name));
-  }
-  return pkgs; // default: original order
+  return [...pkgs].sort((a, b) => {
+    if (sortMode === "downloads_total")   return b.totalDownloads - a.totalDownloads;
+    if (sortMode === "downloads_monthly") return b.monthlyDownloads - a.monthlyDownloads;
+    if (sortMode === "name")              return a.name.localeCompare(b.name);
+    if (sortMode === "date")              return new Date(b.updated) - new Date(a.updated);
+    if (sortMode === "category")          return a.category.localeCompare(b.category) || a.name.localeCompare(b.name);
+    return 0;
+  });
 }
 
-// ============================================================
+// =====================================================================
 //  RENDER
-// ============================================================
+// =====================================================================
 function render() {
   const filtered = sortPackages(filterPackages());
   const grid = document.getElementById("package-grid");
-  const countEl = document.getElementById("results-count");
-
-  countEl.textContent = `Showing ${filtered.length} of ${PACKAGES.length} packages`;
+  document.getElementById("results-count").textContent =
+    `Showing ${filtered.length} of ${PACKAGES.length} packages`;
 
   if (filtered.length === 0) {
     grid.innerHTML = `
       <div class="empty-state">
-        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24" style="margin:0 auto .75rem;display:block">
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
-        <h3>No packages found</h3>
-        <p>Try different search terms or clear your filters.</p>
+        <h3>No packages match your search</h3>
+        <p style="margin-top:.3rem">Try different keywords or clear your filters.</p>
       </div>`;
     return;
   }
 
-  grid.innerHTML = filtered.map(pkg => renderCard(pkg)).join("");
+  grid.innerHTML = filtered.map(renderCard).join("");
 }
 
 function renderCard(pkg) {
-  const sb = STATUS_BADGE[pkg.status] || STATUS_BADGE.cran;
-  const tb = pkg.tier ? TIER_BADGE[pkg.tier] : null;
+  const barWidth = Math.round((pkg.totalDownloads / MAX_TOTAL) * 100);
+  const accentColour = CAT_COLOURS[pkg.category] || "#94a3b8";
 
-  const nameHtml = pkg.cranUrl
-    ? `<a href="${pkg.cranUrl}" target="_blank" rel="noopener">${pkg.name}</a>`
-    : pkg.name;
-
-  const fnsHtml = pkg.fns && pkg.fns.length
-    ? `<div class="pkg-fns">${pkg.fns.map(f => `<span class="fn-chip">${f}</span>`).join("")}</div>`
-    : "";
-
-  const footerRight = pkg.cranUrl
-    ? `<a class="cran-link" href="${pkg.cranUrl}" target="_blank" rel="noopener">
-         <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-           <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
-           <polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/>
+  const cranBtn = pkg.cranUrl
+    ? `<a class="link-btn link-btn-cran" href="${pkg.cranUrl}" target="_blank" rel="noopener">
+         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
          </svg>
          CRAN
-       </a>`
-    : `<span class="tier-label">${pkg.tierLabel || "Proposed"}</span>`;
+       </a>` : "";
+
+  const ghBtn = pkg.githubUrl
+    ? `<a class="link-btn link-btn-github" href="${pkg.githubUrl}" target="_blank" rel="noopener">
+         <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor">
+           <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+         </svg>
+         GitHub
+       </a>` : "";
+
+  const installCmd = `install.packages("${pkg.name}")`;
 
   return `
-    <div class="pkg-card">
-      <div class="card-top">
-        <span class="pkg-name">${nameHtml}</span>
-        <div class="badges">
-          <span class="badge ${sb.cls}">${sb.label}</span>
-          ${tb ? `<span class="badge ${tb.cls}">${tb.label}</span>` : ""}
+    <div class="pkg-card ${pkg.catClass}" style="--card-accent:${accentColour}">
+      <div class="card-head">
+        <span class="pkg-name">
+          ${pkg.cranUrl ? `<a href="${pkg.cranUrl}" target="_blank" rel="noopener">${pkg.name}</a>` : pkg.name}
+        </span>
+        <div class="badge-row">
+          <span class="badge b-version">v${pkg.version}</span>
+          <span class="badge ${pkg.availability === 'cran' ? 'b-cran' : 'b-github'}">
+            ${pkg.availability === 'cran' ? 'CRAN' : 'GitHub'}
+          </span>
         </div>
       </div>
+
       <div class="pkg-category">${pkg.category}</div>
       <div class="pkg-desc">${pkg.desc}</div>
-      ${fnsHtml}
-      <div class="pkg-footer">
-        <span style="font-size:11px;color:var(--text-3)">${pkg.status === "proposed" ? "Not yet on CRAN" : pkg.status === "cran" ? "Available on CRAN" : pkg.statusLabel}</span>
-        ${footerRight}
+
+      <div class="pkg-meta">
+        <div class="meta-item">
+          <span class="meta-label">Authors</span>
+          <span class="meta-value">${pkg.authors}</span>
+        </div>
+        <div class="meta-item" style="margin-left:auto;text-align:right;flex-shrink:0">
+          <span class="meta-label">Last updated</span>
+          <span class="meta-value">${fmtDate(pkg.updated)}</span>
+        </div>
+      </div>
+
+      <div class="dl-section">
+        <div class="dl-row">
+          <span class="dl-label">Total downloads (2020–2026)</span>
+          <span class="dl-num">${fmtNum(pkg.totalDownloads)}</span>
+        </div>
+        <div class="dl-bar-bg">
+          <div class="dl-bar-fill" style="width:${barWidth}%"></div>
+        </div>
+        <div class="dl-monthly-row">
+          <span class="dl-monthly-num">${fmtNum(pkg.monthlyDownloads)}</span>
+          <span class="dl-monthly-label">downloads last month</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        ${cranBtn}
+        ${ghBtn}
+        <button class="link-btn link-btn-install" onclick="navigator.clipboard.writeText('${installCmd}').then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy install',1500)})" title="Copy install command">
+          Copy install
+        </button>
       </div>
     </div>`;
 }
